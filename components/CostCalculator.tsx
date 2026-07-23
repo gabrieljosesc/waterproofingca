@@ -8,16 +8,16 @@ const MIN_FEET = 10;
 const MAX_FEET = 200;
 
 /**
- * Instant estimate widget: linear feet × the published $400/ft rate.
- * Inspired by competitor cost calculators, but simpler because DryFort
- * publishes one flat exterior rate.
+ * Instant estimate widget: linear feet × the published exterior rate range
+ * ($250 to $350 / ft). Produces a low-to-high budget range, since the real
+ * rate depends on access and site conditions.
  */
 export function CostCalculator() {
   const [feet, setFeet] = useState(40);
-  const estimate = feet * site.pricePerLinearFoot;
-  const monthly = Math.round(
-    estimate / site.financing.exampleTermMonths / 5
-  ) * 5;
+  const estimateLow = feet * site.pricing.exteriorMin;
+  const estimateHigh = feet * site.pricing.exteriorMax;
+  const monthlyLow =
+    Math.round(estimateLow / site.financing.exampleTermMonths / 5) * 5;
 
   return (
     <div className="calculator">
@@ -49,16 +49,18 @@ export function CostCalculator() {
 
       <div className="calculator__result">
         <div>
-          <div className="calculator__label">Estimated cost</div>
+          <div className="calculator__label">Estimated range</div>
           <div className="calculator__figure">
-            ${estimate.toLocaleString("en-CA")}
+            ${estimateLow.toLocaleString("en-CA")} to $
+            {estimateHigh.toLocaleString("en-CA")}
           </div>
           <div className="calculator__math">
-            {feet} ft × ${site.pricePerLinearFoot}/ft · CAD, before HST
+            {feet} ft × ${site.pricing.exteriorMin} to $
+            {site.pricing.exteriorMax}/ft · CAD, before HST
           </div>
           <div className="calculator__finance">
-            or as low as{" "}
-            <strong>~${monthly.toLocaleString("en-CA")}/mo</strong> with
+            or from{" "}
+            <strong>~${monthlyLow.toLocaleString("en-CA")}/mo</strong> with
             financing
           </div>
         </div>

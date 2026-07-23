@@ -9,7 +9,7 @@ export const site = {
   shortName: "DryFort",
   tagline: "24/7 Emergency Basement Waterproofing",
   description:
-    "DryFort Waterproofing is Southern Ontario's 24/7 emergency basement waterproofing company — exterior & interior foundation waterproofing, sump pumps, crack repair and flood response for homes and commercial buildings. Transparent pricing from $400 per linear foot.",
+    "DryFort Waterproofing is Southern Ontario's 24/7 emergency basement waterproofing company — exterior & interior foundation waterproofing, sump pumps, crack repair and flood response for homes and commercial buildings. Transparent pricing from $250 per linear foot.",
   url: "https://www.dryfortwaterproofing.ca",
 
   // --- CONTACT DETAILS (mock placeholders — replace before launch) ---
@@ -20,7 +20,11 @@ export const site = {
   address: "45 Lakeshore Rd E, Unit 2, Mississauga, ON",
   hours: "Office: Mon–Fri 8:00 AM – 6:00 PM · Emergency crews: 24/7",
 
-  pricePerLinearFoot: 400,
+  pricing: {
+    exteriorMin: 250,
+    exteriorMax: 350,
+    interiorPerFoot: 175,
+  },
 
   // --- FINANCING ---
   // PLACEHOLDER terms for the demo UI. Confirm the real lender, rate, terms
@@ -117,7 +121,7 @@ export const services: Service[] = [
     short:
       "Excavate, seal and shield the outside of your foundation — the permanent fix for leaky basements.",
     description:
-      "Exterior waterproofing stops water before it ever touches your foundation. We excavate down to the footing, repair cracks, apply a rubberized waterproof membrane and drainage board, and install new weeping tile with clear gravel. It's the most complete, longest-lasting protection available — and our standard, transparent rate is $400 per linear foot.",
+      "Exterior waterproofing stops water before it ever touches your foundation. We excavate down to the footing, repair cracks, apply a rubberized waterproof membrane and drainage board, and install new weeping tile with clear gravel. It's the most complete, longest-lasting protection available, and our rate runs $250 to $350 per linear foot depending on access and site conditions.",
     features: [
       "Full excavation to the footing",
       "Rubberized membrane & drainage board",
@@ -133,7 +137,7 @@ export const services: Service[] = [
     short:
       "Internal drainage systems that capture water at the wall and move it safely to a sump.",
     description:
-      "When exterior access isn't practical — tight lot lines, additions, finished landscaping — an interior system is the smart alternative. We install an internal weeping tile and drainage membrane along the footing that collects water penetrating the wall and channels it to a sump pump, keeping your basement dry year-round.",
+      "When exterior access isn't practical — tight lot lines, additions, finished landscaping — an interior system is the smart alternative. We install an internal weeping tile and drainage membrane along the footing that collects water penetrating the wall and channels it to a sump pump, keeping your basement dry year-round. Our interior rate is $175 per linear foot; sump pump, backup battery and other add-ons are quoted separately.",
     features: [
       "Interior weeping tile at the footing",
       "Dimpled drainage membrane on walls",
@@ -225,7 +229,7 @@ export const testimonials: Testimonial[] = [
     name: "Mark & Josie T.",
     location: "Hamilton",
     service: "Exterior Waterproofing",
-    text: "Our basement flooded twice in one spring. DryFort quoted exactly what the website said — $400 a foot, no games — and the crew left the yard cleaner than they found it. Two storm seasons later, bone dry.",
+    text: "Our basement flooded twice in one spring. DryFort quoted exactly what the website said, no games, and the crew left the yard cleaner than they found it. Two storm seasons later, bone dry.",
   },
   {
     name: "Priya S.",
@@ -246,7 +250,7 @@ export type Faq = { q: string; a: string };
 export const faqs: Faq[] = [
   {
     q: "How much does basement waterproofing cost in Southern Ontario?",
-    a: "DryFort charges a transparent flat rate of $400 per linear foot for full exterior foundation waterproofing — excavation, membrane, drainage board and new weeping tile included. Interior systems, crack injections and sump pump work are quoted per project. Every quote is free, written and itemized, for both residential and commercial properties.",
+    a: "Exterior foundation waterproofing runs $250 to $350 per linear foot depending on access and site conditions, and includes excavation, membrane, drainage board and new weeping tile. Interior waterproofing is $175 per linear foot, with sump pump and backup battery quoted separately. Crack injections and other work are quoted per project. Every quote is free, written and itemized, for both residential and commercial properties.",
   },
   {
     q: "Do you really offer 24/7 emergency waterproofing service?",

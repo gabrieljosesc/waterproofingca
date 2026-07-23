@@ -711,10 +711,10 @@ h3 {
 }
 
 .calculator__figure {
-  font-size: 2.4rem;
+  font-size: clamp(1.7rem, 5vw, 2.1rem);
   font-weight: 800;
   color: var(--accent);
-  line-height: 1.1;
+  line-height: 1.15;
 }
 
 .calculator__math {

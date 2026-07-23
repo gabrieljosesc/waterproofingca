@@ -32,8 +32,8 @@ warning, persists nothing).
 ## Features
 
 - **Instant cost calculator** (`components/CostCalculator.tsx`, on `/pricing`) —
-  linear-feet slider × the $400/ft rate with live total **and an illustrative
-  "as low as ~$X/month with financing" figure**.
+  linear-feet slider × the $250–350/ft exterior range with a live low-to-high
+  total **and an illustrative "from ~$X/month with financing" figure**.
 - **Financing section** on `/pricing` — dedicated "Waterproof now, pay monthly"
   panel with an example-plan card ($16k over 10 yrs ≈ $135/mo), plus shorter
   mentions on the home pricing strip and inside the calculator. **The financing
@@ -51,8 +51,9 @@ warning, persists nothing).
 
 - All copy, contact details, services, FAQs and pricing live in `lib/site.ts`.
   **Phone / email / address are mock placeholders — replace before launch.**
-- Pricing: **$400 per linear foot** (exterior waterproofing), residential &
-  commercial quotes.
+- Pricing: **$250–350 per linear foot** (exterior waterproofing, depending on
+  access/conditions), **$175** (interior), residential & commercial quotes.
+  Rates centralized in `site.pricing`.
 - SEO: per-page metadata, `sitemap.ts`, `robots.ts`, and JSON-LD structured data
   (LocalBusiness + FAQPage) in `app/layout.tsx` — targeted at
   "basement waterproofing Southern Ontario" / "24/7 emergency waterproofing"
@@ -66,6 +67,6 @@ warning, persists nothing).
 | ----------- | -------------------------------------------------- |
 | `/`         | Hero, services grid, pricing strip, FAQ, service area |
 | `/services` | Six services in detail + process                   |
-| `/pricing`  | $400/linear ft breakdown, residential vs commercial |
+| `/pricing`  | $250–350/linear ft breakdown, residential vs commercial |
 | `/about`    | Story, stats, values                               |
 | `/contact`  | Quote form (Supabase) + 24/7 emergency contact     |

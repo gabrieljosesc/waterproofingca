@@ -7,9 +7,9 @@ import { CostCalculator } from "@/components/CostCalculator";
 import { CardIcon, CheckIcon } from "@/components/Icons";
 
 export const metadata: Metadata = {
-  title: "Pricing — $400 Per Linear Foot",
+  title: "Pricing & Costs",
   description:
-    "Transparent basement waterproofing pricing in Southern Ontario: $400 per linear foot for exterior foundation waterproofing. Free itemized quotes for residential and commercial properties.",
+    "Transparent basement waterproofing pricing in Southern Ontario: $250 to $350 per linear foot for exterior foundation waterproofing, $175 for interior. Free itemized quotes for residential and commercial properties.",
 };
 
 const included = [
@@ -56,13 +56,15 @@ export default function PricingPage() {
           <span className="eyebrow">Exterior Waterproofing</span>
           <h2 className="section-title">The DryFort Rate</h2>
           <div className="price-banner">
-            <span className="price-banner__figure">$400</span>
+            <span className="price-banner__figure">$250–350</span>
             <span className="price-banner__unit">per linear foot</span>
           </div>
           <p className="section-lead" style={{ margin: "0 auto" }}>
-            That&apos;s the complete exterior system — not a teaser rate.
-            Measure the wall that leaks, multiply, and you have a realistic
-            budget before we ever visit.
+            That&apos;s the complete exterior system, not a teaser rate. Where
+            you land in the range depends on access and site conditions, like
+            excavation depth, what&apos;s on the ground, and how easily
+            equipment can reach the wall. We confirm the exact figure at your
+            free on-site assessment.
           </p>
           <div
             className="card"
@@ -76,6 +78,21 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div
+            className="card"
+            style={{ maxWidth: 560, margin: "20px auto 0", textAlign: "left" }}
+          >
+            <h3 style={{ marginBottom: 6 }}>Interior waterproofing</h3>
+            <div className="price-card__tag" style={{ marginBottom: 12 }}>
+              $175 per linear foot
+            </div>
+            <p style={{ color: "var(--text-muted)" }}>
+              Internal drainage systems for when exterior access isn&apos;t
+              practical. Sump pump, backup battery and other add-ons are quoted
+              separately.
+            </p>
           </div>
         </div>
       </section>
@@ -115,7 +132,7 @@ export default function PricingPage() {
               <div className="price-card__body">
                 <h3>Residential</h3>
                 <div className="price-card__tag">
-                  From $400 / linear foot · free itemized quote
+                  From $250 / linear foot · free itemized quote
                 </div>
                 <p>
                   Houses, semis, townhomes and cottages. We protect the place
@@ -232,10 +249,10 @@ export default function PricingPage() {
             <aside className="finance__card">
               <div className="finance__card-label">Example plan</div>
               <div className="finance__card-figure">
-                ~$135<span>/mo</span>
+                ~$100<span>/mo</span>
               </div>
               <p className="finance__card-note">
-                A typical $16,000 exterior waterproofing project (about 40
+                A typical $12,000 exterior waterproofing project (about 40
                 linear feet) financed over 10 years.
               </p>
               <div className="finance__card-divider" />

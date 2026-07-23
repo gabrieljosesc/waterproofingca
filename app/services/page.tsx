@@ -20,7 +20,7 @@ const process = [
   {
     step: "02",
     title: "Written Quote",
-    text: "You get a free, itemized quote — $400 per linear foot for exterior work, with residential and commercial pricing spelled out.",
+    text: "You get a free, itemized quote — $250 to $350 per linear foot for exterior work, $175 for interior, with residential and commercial pricing spelled out.",
   },
   {
     step: "03",

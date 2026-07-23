@@ -18,7 +18,7 @@ const values = [
   },
   {
     title: "Price It Straight",
-    text: "$400 per linear foot, published on our website. Free, itemized quotes. If a cheaper fix will do the job, we'll tell you.",
+    text: "$250 to $350 per linear foot for exterior, published on our website. Free, itemized quotes. If a cheaper fix will do the job, we'll tell you.",
   },
   {
     title: "Fix It Once",
@@ -32,7 +32,7 @@ const values = [
 
 const stats = [
   { value: "24/7", label: "Emergency Response" },
-  { value: "$400", label: "Per Linear Foot" },
+  { value: "$250+", label: "Per Linear Foot" },
   { value: "25-Yr", label: "Transferable Warranty" },
   { value: "100%", label: "Licensed & Insured" },
 ];

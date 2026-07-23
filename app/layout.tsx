@@ -54,7 +54,7 @@ function StructuredData() {
     url: site.url,
     telephone: site.phone,
     email: site.email,
-    priceRange: "$400 per linear foot",
+    priceRange: "$250–$350 per linear foot",
     address: {
       "@type": "PostalAddress",
       streetAddress: "45 Lakeshore Rd E, Unit 2",
@@ -90,7 +90,8 @@ function StructuredData() {
         },
         priceSpecification: {
           "@type": "UnitPriceSpecification",
-          price: site.pricePerLinearFoot,
+          minPrice: site.pricing.exteriorMin,
+          maxPrice: site.pricing.exteriorMax,
           priceCurrency: "CAD",
           unitText: "per linear foot",
         },

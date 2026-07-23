@@ -34,7 +34,7 @@ const whyUs = [
   {
     icon: <DollarIcon />,
     title: "Transparent Pricing",
-    text: "A clear $400 per linear foot rate for exterior waterproofing, with free written, itemized quotes for every residential and commercial job. No surprises, no upselling.",
+    text: "Clear $250 to $350 per linear foot pricing for exterior waterproofing, with free written, itemized quotes for every residential and commercial job. No surprises, no upselling.",
   },
   {
     icon: <ShieldIcon />,
@@ -91,7 +91,7 @@ export default function HomePage() {
               <div className="stat__label">Emergency Response</div>
             </div>
             <div className="stat">
-              <div className="stat__value">$400</div>
+              <div className="stat__value">$250+</div>
               <div className="stat__label">Per Linear Foot</div>
             </div>
             <div className="stat">
@@ -178,7 +178,7 @@ export default function HomePage() {
           <span className="eyebrow">Straightforward Pricing</span>
           <h2 className="section-title">Know the number before we dig</h2>
           <div className="price-banner">
-            <span className="price-banner__figure">$400</span>
+            <span className="price-banner__figure">$250–350</span>
             <span className="price-banner__unit">
               per linear foot · exterior waterproofing
             </span>
@@ -187,10 +187,10 @@ export default function HomePage() {
             className="section-lead"
             style={{ margin: "0 auto 20px" }}
           >
-            One transparent rate for full exterior foundation waterproofing —
+            Transparent pricing for full exterior foundation waterproofing —
             excavation, membrane, drainage board and new weeping tile included.
-            Residential and commercial quotes are always free, written and
-            itemized.
+            The rate depends on access and site conditions, and every
+            residential and commercial quote is free, written and itemized.
           </p>
           <p
             className="eyebrow"
