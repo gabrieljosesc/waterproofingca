@@ -644,94 +644,6 @@ h3 {
   margin-top: auto;
 }
 
-/* ---- Cost calculator ---- */
-.calculator {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 36px;
-  max-width: 640px;
-  margin: 0 auto;
-}
-
-.calculator h3 {
-  font-size: 1.35rem;
-  margin-bottom: 8px;
-}
-
-.calculator__hint {
-  color: var(--text-muted);
-  font-size: 0.95rem;
-  margin-bottom: 26px;
-}
-
-.calculator__row label {
-  display: block;
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-}
-
-.calculator__row label strong {
-  color: var(--text);
-}
-
-.calculator__row input[type="range"] {
-  width: 100%;
-  accent-color: var(--accent);
-  cursor: pointer;
-}
-
-.calculator__scale {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.78rem;
-  color: var(--text-dim);
-  margin-top: 6px;
-}
-
-.calculator__result {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 22px 24px;
-  margin-top: 26px;
-}
-
-.calculator__label {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-dim);
-}
-
-.calculator__figure {
-  font-size: clamp(1.7rem, 5vw, 2.1rem);
-  font-weight: 800;
-  color: var(--accent);
-  line-height: 1.15;
-}
-
-.calculator__math {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.calculator__finance {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin-top: 6px;
-}
-
-.calculator__finance strong {
-  color: var(--accent);
-}
-
 /* ---- Financing panel ---- */
 .finance {
   display: grid;
@@ -1348,10 +1260,6 @@ h3 {
   .gallery,
   .form__row {
     grid-template-columns: 1fr;
-  }
-
-  .calculator {
-    padding: 24px;
   }
 
   .gallery__item--wide {

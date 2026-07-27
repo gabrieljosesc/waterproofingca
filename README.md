@@ -31,15 +31,18 @@ warning, persists nothing).
 
 ## Features
 
-- **Instant cost calculator** (`components/CostCalculator.tsx`, on `/pricing`) —
-  linear-feet slider × the $250–350/ft exterior range with a live low-to-high
-  total **and an illustrative "from ~$X/month with financing" figure**.
+- **Public pricing** is intentionally a "from" rate, not a range: exterior
+  **from $275/ft** ($4,000 min job), interior **from $120/ft** ($2,800 min).
+  Per client decision, the site does NOT advertise a range, since the real
+  quote climbs with depth/access/location modifiers — the Phase 1 AI quote
+  tool (separate build) produces the actual per-project range. An earlier
+  slider calculator was removed for this reason.
 - **Financing section** on `/pricing` — dedicated "Waterproof now, pay monthly"
-  panel with an example-plan card ($16k over 10 yrs ≈ $135/mo), plus shorter
-  mentions on the home pricing strip and inside the calculator. **The financing
-  terms ($0 down, up to 10 years, on approved credit) and the example rate are
-  PLACEHOLDERS** — confirm the real lender, rate, term and legal disclosure
-  with the client before launch. Terms are centralized in `site.financing`.
+  panel with an example-plan card ($11k over 10 yrs ≈ $90/mo), plus a short
+  mention on the home pricing strip. **The financing terms ($0 down, up to 10
+  years, on approved credit) and the example rate are PLACEHOLDERS** — confirm
+  the real lender, rate, term and legal disclosure with the client before
+  launch. Terms are centralized in `site.financing`.
 - **Testimonials** on the home page — **sample content** in `lib/site.ts`;
   replace with the client's real reviews before launch.
 - **Guarantee strip** (warranty / price match / licensed / 24-7) on the home
@@ -51,9 +54,9 @@ warning, persists nothing).
 
 - All copy, contact details, services, FAQs and pricing live in `lib/site.ts`.
   **Phone / email / address are mock placeholders — replace before launch.**
-- Pricing: **$250–350 per linear foot** (exterior waterproofing, depending on
-  access/conditions), **$175** (interior), residential & commercial quotes.
-  Rates centralized in `site.pricing`.
+- Pricing: exterior waterproofing **from $275/linear ft** ($4,000 min job),
+  interior **from $120/linear ft** ($2,800 min), residential & commercial
+  quotes. Rates centralized in `site.pricing`.
 - SEO: per-page metadata, `sitemap.ts`, `robots.ts`, and JSON-LD structured data
   (LocalBusiness + FAQPage) in `app/layout.tsx` — targeted at
   "basement waterproofing Southern Ontario" / "24/7 emergency waterproofing"
@@ -67,6 +70,6 @@ warning, persists nothing).
 | ----------- | -------------------------------------------------- |
 | `/`         | Hero, services grid, pricing strip, FAQ, service area |
 | `/services` | Six services in detail + process                   |
-| `/pricing`  | $250–350/linear ft breakdown, residential vs commercial |
+| `/pricing`  | From $275/linear ft breakdown, residential vs commercial |
 | `/about`    | Story, stats, values                               |
 | `/contact`  | Quote form (Supabase) + 24/7 emergency contact     |
