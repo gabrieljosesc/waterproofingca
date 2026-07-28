@@ -60,13 +60,16 @@ export default function PricingPage() {
               per linear foot · $4,000 minimum job
             </span>
           </div>
-          <p className="section-lead" style={{ margin: "0 auto" }}>
+          <p className="section-lead" style={{ margin: "0 auto 24px" }}>
             That&apos;s the complete exterior system, not a teaser rate. The
             final figure depends on excavation depth, access and site
             conditions, like what&apos;s on the ground and how easily equipment
             can reach the wall, so we confirm the exact price at your free
             on-site assessment.
           </p>
+          <Link href="/estimate" className="btn btn--primary">
+            Get a Photo Estimate for Your Home
+          </Link>
           <div
             className="card"
             style={{ maxWidth: 560, margin: "36px auto 0", textAlign: "left" }}

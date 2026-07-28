@@ -1125,6 +1125,127 @@ h3 {
   margin-bottom: 18px;
 }
 
+/* ---- Estimate wizard ---- */
+.wizard__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-bottom: 26px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.wizard__step {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.wizard__step-num {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  border: 1px solid var(--border);
+}
+
+.wizard__step--active {
+  color: var(--text);
+}
+.wizard__step--active .wizard__step-num {
+  background: var(--accent-strong);
+  color: #eaf2f8;
+  border-color: var(--accent-strong);
+}
+.wizard__step--done .wizard__step-num {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.wizard__intro,
+.wizard__photo-hint {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.wizard__intro {
+  margin-bottom: 20px;
+}
+
+.wizard__photo {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+
+.wizard__photo-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.wizard__photo-head span {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.wizard__photo-hint {
+  margin-bottom: 12px;
+}
+
+.wizard__photo input[type="file"] {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  width: 100%;
+}
+
+.wizard__check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+.wizard__check input {
+  margin-top: 3px;
+  accent-color: var(--accent-strong);
+  flex-shrink: 0;
+}
+
+.wizard__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.wizard__done-icon {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
 /* ---- Footer ---- */
 .footer {
   background: var(--bg-alt);

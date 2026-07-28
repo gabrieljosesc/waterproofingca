@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createAdminClient, isSupabaseConfigured } from "@/lib/supabase/admin";
 
 const VALID_PROPERTY_TYPES = ["residential", "commercial"];
 
@@ -31,15 +31,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Input too long." }, { status: 400 });
   }
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ??
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  // Demo mode: no Supabase configured yet — accept the request so the UI
-  // flow works, but flag it in the response for developers.
-  if (!supabaseUrl || !supabaseKey) {
-    console.warn("[quote] Supabase env vars not set — lead not persisted:", {
+  // Demo mode: no service-role key configured yet — accept the request so the
+  // UI flow works, but persist nothing.
+  if (!isSupabaseConfigured()) {
+    console.warn("[quote] Supabase not configured — lead not persisted:", {
       name,
       email,
       service,
@@ -47,7 +42,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, stored: false });
   }
 
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  const supabase = createAdminClient();
   const { error } = await supabase.from("quote_requests").insert({
     name,
     email,
