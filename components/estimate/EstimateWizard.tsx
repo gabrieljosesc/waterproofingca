@@ -99,6 +99,12 @@ export function EstimateWizard() {
           }
         }
         await fetch("/api/estimate/photos", { method: "POST", body: fd });
+
+        // Kick off AI analysis in the background — the owner reviews the draft
+        // later, so we don't make the customer wait for it.
+        fetch(`/api/estimate/${json.submissionId}/analyze`, {
+          method: "POST",
+        }).catch(() => {});
       }
 
       setStatus("done");
