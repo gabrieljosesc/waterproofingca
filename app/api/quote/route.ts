@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAdminClient, isSupabaseConfigured } from "@/lib/supabase/admin";
+import { ownerAlertAddress, sendEmail } from "@/lib/email/resend";
+import { ownerAlertEmail } from "@/lib/email/templates";
 
 const VALID_PROPERTY_TYPES = ["residential", "commercial"];
 
@@ -60,6 +62,23 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+
+  // Owner alert — never fatal to the lead.
+  const alert = ownerAlertEmail({
+    kind: "contact",
+    name,
+    email,
+    phone: phone || null,
+    service: service || null,
+    message,
+  });
+  await sendEmail({
+    to: ownerAlertAddress(),
+    subject: alert.subject,
+    html: alert.html,
+    text: alert.text,
+    replyTo: email,
+  });
 
   return NextResponse.json({ ok: true, stored: true });
 }

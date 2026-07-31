@@ -10,7 +10,7 @@ import {
   money,
   useRequireSession,
 } from "@/components/admin/shared";
-import type { Database, Json } from "@/lib/supabase/types";
+import type { Database } from "@/lib/supabase/types";
 
 type Submission = Database["public"]["Tables"]["estimate_submissions"]["Row"];
 type Estimate = Database["public"]["Tables"]["submission_estimates"]["Row"];
@@ -113,53 +113,74 @@ export default function AdminDetailPage() {
     if (ready) load();
   }, [ready, load]);
 
-  async function setStatus(status: string, estimateStatus?: string) {
+  async function setStatus(status: string) {
     setBusy(true);
     setNotice(null);
     setError(null);
     const supabase = createBrowserClient();
-
-    if (estimateStatus === "approved" && estimate) {
-      const low = Number(finalLow);
-      const high = Number(finalHigh);
-      if (!Number.isFinite(low) || !Number.isFinite(high) || low <= 0 || high < low) {
-        setBusy(false);
-        setError("Enter a valid final range before approving (low ≤ high).");
-        return;
-      }
-      const { error: e } = await supabase
-        .from("submission_estimates")
-        .update({
-          status: "approved",
-          final_low: low,
-          final_high: high,
-          owner_adjustments: (ownerNote
-            ? { note: ownerNote }
-            : null) as unknown as Json,
-        })
-        .eq("submission_id", id);
-      if (e) {
-        setBusy(false);
-        setError(e.message);
-        return;
-      }
-    }
-
-    const { error: e2 } = await supabase
+    const { error: e } = await supabase
       .from("estimate_submissions")
       .update({ status })
       .eq("id", id);
     setBusy(false);
-    if (e2) {
-      setError(e2.message);
+    if (e) {
+      setError(e.message);
       return;
     }
-    setNotice(
-      estimateStatus === "approved"
-        ? "Estimate approved and final range saved. (Customer emails arrive with the next build slice — for now, send it manually.)"
-        : "Status updated."
-    );
+    setNotice("Status updated.");
     load();
+  }
+
+  async function approveAndSend() {
+    const low = Number(finalLow);
+    const high = Number(finalHigh);
+    if (!Number.isFinite(low) || !Number.isFinite(high) || low <= 0 || high < low) {
+      setError("Enter a valid final range before approving (low ≤ high).");
+      return;
+    }
+    setBusy(true);
+    setNotice(null);
+    setError(null);
+
+    const supabase = createBrowserClient();
+    const { data: sessionData } = await supabase.auth.getSession();
+    const token = sessionData.session?.access_token;
+    if (!token) {
+      setBusy(false);
+      setError("Session expired — sign in again.");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/admin/send-estimate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          submissionId: id,
+          finalLow: low,
+          finalHigh: high,
+          note: ownerNote,
+        }),
+      });
+      const json = await res.json();
+      setBusy(false);
+      if (!res.ok) {
+        setError(json.error ?? "Something went wrong.");
+        return;
+      }
+      setNotice(
+        json.emailed
+          ? "Approved and emailed to the customer. ✅"
+          : json.warning ?? "Approved; email not sent."
+      );
+      load();
+    } catch {
+      setBusy(false);
+      setError("Network error — try again.");
+    }
   }
 
   if (!ready) return null;
@@ -395,9 +416,9 @@ export default function AdminDetailPage() {
                         <button
                           className="btn btn--primary"
                           disabled={busy}
-                          onClick={() => setStatus("approved", "approved")}
+                          onClick={approveAndSend}
                         >
-                          Approve estimate
+                          {busy ? "Working…" : "Approve & email customer"}
                         </button>
                         <button
                           className="btn btn--ghost"
@@ -422,9 +443,10 @@ export default function AdminDetailPage() {
                         </button>
                       </div>
                       <p className="form__note">
-                        Approving saves your final range. Sending it to the
-                        customer by email arrives with the next build slice — for
-                        now, contact them directly.
+                        Approving saves your final range and emails the estimate
+                        to the customer. If email isn&apos;t configured yet, the
+                        approval still saves and you&apos;ll be told to send it
+                        manually.
                       </p>
                     </div>
                   </>

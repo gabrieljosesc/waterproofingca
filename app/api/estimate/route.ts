@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { createAdminClient, isSupabaseConfigured } from "@/lib/supabase/admin";
 import { validateIntake, type IntakePayload } from "@/lib/estimate/schema";
+import { appBaseUrl, ownerAlertAddress, sendEmail } from "@/lib/email/resend";
+import { ownerAlertEmail } from "@/lib/email/templates";
 
 /**
  * Create an estimate submission from the customer intake wizard.
@@ -45,6 +47,26 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+
+  // Owner alert — never fatal to the customer's submission.
+  const alert = ownerAlertEmail({
+    kind: "estimate",
+    name: result.insert.full_name,
+    email: result.insert.email,
+    phone: result.insert.phone,
+    city: result.insert.city,
+    service: result.insert.service_requested,
+    urgent: result.insert.urgent ?? false,
+    activeLeak: result.insert.active_leak ?? false,
+    dashboardUrl: `${appBaseUrl()}/admin/${data.id}`,
+  });
+  await sendEmail({
+    to: ownerAlertAddress(),
+    subject: alert.subject,
+    html: alert.html,
+    text: alert.text,
+    replyTo: result.insert.email,
+  });
 
   return NextResponse.json({ ok: true, stored: true, submissionId: data.id });
 }
