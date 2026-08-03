@@ -26,9 +26,15 @@ export function ownerAlertAddress(): string {
   return process.env.OWNER_ALERT_EMAIL ?? "gabbymayuga77@gmail.com";
 }
 
-/** Base URL used in dashboard links inside emails. */
+/** Base URL used in dashboard links inside emails. Explicit APP_BASE_URL wins;
+ *  on Vercel we fall back to the auto-provided production/deployment URL, so
+ *  links are correct in production with zero configuration. */
 export function appBaseUrl(): string {
-  return process.env.APP_BASE_URL ?? "http://localhost:3000";
+  if (process.env.APP_BASE_URL) return process.env.APP_BASE_URL;
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return "http://localhost:3000";
 }
 
 export interface SendEmailInput {
