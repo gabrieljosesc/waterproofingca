@@ -329,8 +329,18 @@ export function EstimateWizard() {
           </label>
           <label className="wizard__check">
             <input type="checkbox" checked={flags.consent ?? false} onChange={(e) => toggle("consent", e.target.checked)} />
-            I agree to be contacted about this request, and I understand any
-            estimate is preliminary and confirmed on site.
+            <span>
+              I agree to be contacted about this request, I understand any
+              estimate is preliminary and confirmed on site, and I accept the{" "}
+              <a href="/terms" target="_blank" style={{ color: "var(--accent)" }}>
+                Terms
+              </a>{" "}
+              and{" "}
+              <a href="/privacy" target="_blank" style={{ color: "var(--accent)" }}>
+                Privacy Policy
+              </a>{" "}
+              (including AI analysis of my photos).
+            </span>
           </label>
         </div>
       )}

@@ -62,6 +62,11 @@ export function Footer() {
             © {new Date().getFullYear()} {site.name}. All rights reserved.
           </span>
           <span>
+            <Link href="/privacy">Privacy Policy</Link>
+            {" · "}
+            <Link href="/terms">Terms of Service</Link>
+          </span>
+          <span>
             24/7 Emergency Waterproofing · Serving Southern Ontario
           </span>
         </div>
