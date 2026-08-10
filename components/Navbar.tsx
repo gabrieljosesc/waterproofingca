@@ -60,8 +60,8 @@ export function Navbar() {
             })}
           </nav>
 
-          <Link href="/contact" className="btn btn--primary header__cta">
-            Get a Free Quote
+          <Link href="/estimate" className="btn btn--primary header__cta">
+            Get Your Instant Quote
           </Link>
 
           <button

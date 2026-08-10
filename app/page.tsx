@@ -78,8 +78,8 @@ export default function HomePage() {
             won&apos;t wait.
           </p>
           <div className="hero__actions">
-            <Link href="/contact" className="btn btn--primary">
-              Get a Free Quote
+            <Link href="/estimate" className="btn btn--primary">
+              Get Your Instant Quote
             </Link>
             <a href={site.phoneHref} className="btn btn--ghost">
               <PhoneIcon size={18} /> Emergency: {site.phone}
