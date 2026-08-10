@@ -64,14 +64,16 @@ export default function TermsPage() {
           You may choose to <strong>accept</strong> your instant estimate to
           reserve your project in our schedule ahead of other requests.
           Accepting is not a binding contract or a guarantee of the final
-          price — it confirms your interest and priority. A{" "}
+          price — it confirms your interest and priority, subject to final
+          review at a free on-site visit. A{" "}
           <strong>refundable deposit</strong> (currently 20% of the estimated
-          range) is required to confirm and hold your priority slot. We do{" "}
-          <strong>not</strong> collect, process, or store payment card details
-          through this website. When you accept an estimate, our team will
-          contact you by phone to arrange the deposit using our standard,
-          secure point-of-sale terminal. Deposit refund terms will be
-          confirmed with you directly at the time of collection.
+          range) is required to confirm and hold your priority slot. When you
+          accept, you provide card details so we can process that deposit on
+          our payment terminal. We do not store your full card number in our
+          database; authorized staff can view it only in our private admin
+          tools until the deposit is recorded, after which the full number is
+          cleared. Deposit refund terms will be confirmed with you at the time
+          of collection.
         </p>
 
         <h2>Municipal rebates</h2>

@@ -107,23 +107,29 @@ export interface QuoteAcceptedInput {
   depositPercent: number;
   depositLow: number;
   depositHigh: number;
+  cardBrand?: string;
+  cardLast4?: string;
   dashboardUrl?: string;
 }
 
 /**
- * Owner alert when a customer accepts their instant estimate and wants to
- * reserve their slot. No card details anywhere here — the whole point of
- * this email is to prompt a phone call so the deposit is taken on the
- * owner's own terminal.
+ * Owner alert when a customer accepts their instant estimate and submits
+ * card details for the refundable deposit. Full PAN is never emailed —
+ * open the dashboard to reveal it, charge the terminal, then mark collected.
  */
 export function quoteAcceptedEmail(input: QuoteAcceptedInput): {
   subject: string;
   html: string;
   text: string;
 } {
-  const subject = `🔒 Quote accepted — call to collect deposit — ${input.name}${
+  const subject = `🔒 Quote accepted — deposit card on file — ${input.name}${
     input.city ? `, ${input.city}` : ""
   }`;
+
+  const cardLine =
+    input.cardLast4
+      ? `${(input.cardBrand ?? "card").toString()} •••• ${input.cardLast4}`
+      : null;
 
   const rows: Array<[string, string]> = [
     ["Name", input.name],
@@ -132,12 +138,13 @@ export function quoteAcceptedEmail(input: QuoteAcceptedInput): {
     ...(input.city ? ([["City", input.city]] as Array<[string, string]>) : []),
     ...(input.service ? ([["Service", input.service]] as Array<[string, string]>) : []),
     ["Estimate range", `${money(input.rangeLow)} – ${money(input.rangeHigh)}`],
+    ...(cardLine ? ([["Card on file", cardLine]] as Array<[string, string]>) : []),
   ];
 
   const html = wrap(
     subject,
     `
-    <p style="color:#0a7a3d;font-weight:bold;">This customer accepted their instant estimate and wants to lock in their priority slot.</p>
+    <p style="color:#0a7a3d;font-weight:bold;">This customer accepted their instant estimate and locked in a priority slot with a refundable deposit card.</p>
     ${rows
       .map(
         ([k, v]) =>
@@ -148,7 +155,7 @@ export function quoteAcceptedEmail(input: QuoteAcceptedInput): {
       <p style="margin:0;color:#8395a7;font-size:12px;letter-spacing:1px;">DEPOSIT DUE (${input.depositPercent}%)</p>
       <p style="margin:6px 0 0;font-size:22px;font-weight:bold;color:#3a6d8f;">${money(input.depositLow)} – ${money(input.depositHigh)}</p>
     </div>
-    <p style="font-size:13px;color:#5b6b7b;">Call the customer to confirm details and collect the refundable deposit on your terminal, then mark it collected in the dashboard.</p>
+    <p style="font-size:13px;color:#5b6b7b;">Open the dashboard to view the full card details (admin only), charge the refundable deposit on your terminal, then mark it collected — that clears the full number from storage.</p>
     ${
       input.dashboardUrl
         ? `<p style="margin-top:20px;"><a href="${input.dashboardUrl}" style="background:#3a6d8f;color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Open in dashboard</a></p>`
@@ -159,12 +166,12 @@ export function quoteAcceptedEmail(input: QuoteAcceptedInput): {
   const text = [
     subject,
     "",
-    "This customer accepted their instant estimate and wants to lock in their priority slot.",
+    "This customer accepted their instant estimate and locked in a priority slot with a refundable deposit card.",
     "",
     ...rows.map(([k, v]) => `${k}: ${v}`),
     `Deposit due (${input.depositPercent}%): ${money(input.depositLow)} – ${money(input.depositHigh)}`,
     "",
-    "Call the customer to collect the refundable deposit on your terminal, then mark it collected in the dashboard.",
+    "Open the dashboard to view the full card details (admin only), charge your terminal, then mark the deposit collected.",
     input.dashboardUrl ? `\nOpen: ${input.dashboardUrl}` : "",
   ].join("\n");
 

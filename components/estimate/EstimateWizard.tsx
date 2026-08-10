@@ -59,6 +59,15 @@ export function EstimateWizard() {
   const [accepting, setAccepting] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [acceptError, setAcceptError] = useState<string | null>(null);
+  const [card, setCard] = useState({
+    nameOnCard: "",
+    cardNumber: "",
+    expMonth: "",
+    expYear: "",
+    cvv: "",
+  });
+  const setCardField = (k: keyof typeof card, v: string) =>
+    setCard((c) => ({ ...c, [k]: v }));
 
   // form state
   const [form, setForm] = useState<Record<string, string>>({});
@@ -156,10 +165,26 @@ export function EstimateWizard() {
     try {
       const res = await fetch(`/api/estimate/${submissionId}/accept`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nameOnCard: card.nameOnCard,
+          cardNumber: card.cardNumber,
+          expMonth: card.expMonth,
+          expYear: card.expYear,
+          cvv: card.cvv,
+        }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Something went wrong.");
       setAccepted(true);
+      // Drop PAN/CVV from client memory after a successful accept.
+      setCard({
+        nameOnCard: "",
+        cardNumber: "",
+        expMonth: "",
+        expYear: "",
+        cvv: "",
+      });
     } catch (err) {
       setAcceptError(
         err instanceof Error ? err.message : "Something went wrong."
@@ -248,11 +273,12 @@ export function EstimateWizard() {
             <div>
               <strong>You&apos;re reserved!</strong>
               <p>
-                We&apos;ll call you within one business day to confirm your{" "}
-                {instant.depositPercent}% refundable deposit (
-                {money(instant.depositLow)} – {money(instant.depositHigh)}) and
-                lock in your priority slot. No payment is taken on this site —
-                we&apos;ll process it by phone.
+                Your {instant.depositPercent}% refundable deposit (
+                {money(instant.depositLow)} – {money(instant.depositHigh)}) is
+                ready to process and your priority slot is locked in. This is
+                still a preliminary estimate — final pricing is confirmed at
+                your free on-site visit. We&apos;ll be in touch within one
+                business day.
               </p>
             </div>
           </div>
@@ -260,13 +286,96 @@ export function EstimateWizard() {
           <div className="instant-quote__accept">
             {acceptError && <div className="form__error">{acceptError}</div>}
             <p style={{ color: "var(--text-muted)" }}>
-              Want to lock in your spot? Accepting reserves your project in our
-              schedule ahead of other requests. A {instant.depositPercent}%
-              refundable deposit ({money(instant.depositLow)} –{" "}
-              {money(instant.depositHigh)}) confirms your priority slot — our
-              team will call you to take it by phone. No card details are
-              collected on this site.
+              Want to lock in your spot? Accepting reserves your project ahead
+              of other requests. Enter your card for a{" "}
+              {instant.depositPercent}% refundable deposit (
+              {money(instant.depositLow)} – {money(instant.depositHigh)}) to
+              hold your place in line. We process the deposit after a quick
+              review — it is refundable.
             </p>
+            <div className="deposit-card-form">
+              <div className="field">
+                <label htmlFor="nameOnCard">Name on card</label>
+                <input
+                  id="nameOnCard"
+                  autoComplete="cc-name"
+                  value={card.nameOnCard}
+                  onChange={(e) => setCardField("nameOnCard", e.target.value)}
+                  placeholder="As shown on the card"
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="cardNumber">Card number</label>
+                <input
+                  id="cardNumber"
+                  inputMode="numeric"
+                  autoComplete="cc-number"
+                  value={card.cardNumber}
+                  onChange={(e) =>
+                    setCardField(
+                      "cardNumber",
+                      e.target.value.replace(/[^\d\s]/g, "").slice(0, 23)
+                    )
+                  }
+                  placeholder="•••• •••• •••• ••••"
+                />
+              </div>
+              <div className="form__row deposit-card-form__row">
+                <div className="field">
+                  <label htmlFor="expMonth">Exp. month</label>
+                  <input
+                    id="expMonth"
+                    inputMode="numeric"
+                    autoComplete="cc-exp-month"
+                    value={card.expMonth}
+                    onChange={(e) =>
+                      setCardField(
+                        "expMonth",
+                        e.target.value.replace(/\D/g, "").slice(0, 2)
+                      )
+                    }
+                    placeholder="MM"
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="expYear">Exp. year</label>
+                  <input
+                    id="expYear"
+                    inputMode="numeric"
+                    autoComplete="cc-exp-year"
+                    value={card.expYear}
+                    onChange={(e) =>
+                      setCardField(
+                        "expYear",
+                        e.target.value.replace(/\D/g, "").slice(0, 4)
+                      )
+                    }
+                    placeholder="YYYY"
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="cvv">CVV</label>
+                  <input
+                    id="cvv"
+                    inputMode="numeric"
+                    autoComplete="cc-csc"
+                    value={card.cvv}
+                    onChange={(e) =>
+                      setCardField(
+                        "cvv",
+                        e.target.value.replace(/\D/g, "").slice(0, 4)
+                      )
+                    }
+                    placeholder="•••"
+                  />
+                </div>
+              </div>
+              <p className="form__note">
+                Your full card number is not saved in our database. It is only
+                available to our team in the secure admin dashboard to process
+                your refundable deposit, then cleared.
+              </p>
+            </div>
             <div className="cta-band__actions" style={{ justifyContent: "flex-start" }}>
               <button
                 type="button"
@@ -274,7 +383,9 @@ export function EstimateWizard() {
                 onClick={acceptQuote}
                 disabled={accepting}
               >
-                {accepting ? "Reserving…" : "Accept Quote & Reserve My Slot"}
+                {accepting
+                  ? "Reserving…"
+                  : "Accept Quote & Pay 20% Deposit"}
               </button>
               <a href={site.phoneHref} className="btn btn--ghost">
                 <PhoneIcon size={18} /> Call {site.phone}

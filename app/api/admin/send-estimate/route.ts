@@ -91,16 +91,26 @@ export async function POST(request: Request) {
     );
   }
 
-  // --- Approve: save the final range ---
+  // --- Approve: save the final range (merge adjustments so deposit card meta stays) ---
+  const prevAdj =
+    estimate.owner_adjustments &&
+    typeof estimate.owner_adjustments === "object" &&
+    !Array.isArray(estimate.owner_adjustments)
+      ? (estimate.owner_adjustments as Record<string, unknown>)
+      : {};
+  const nextAdj = {
+    ...prevAdj,
+    approved_by: email,
+    ...(body.note?.trim() ? { note: body.note.trim() } : {}),
+  };
+
   const { error: approveErr } = await supabase
     .from("submission_estimates")
     .update({
       status: "approved",
       final_low: finalLow,
       final_high: finalHigh,
-      owner_adjustments: (body.note?.trim()
-        ? { note: body.note.trim(), approved_by: email }
-        : { approved_by: email }) as unknown as Json,
+      owner_adjustments: nextAdj as unknown as Json,
     })
     .eq("submission_id", submissionId);
   if (approveErr) {

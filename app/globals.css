@@ -1342,6 +1342,51 @@ h3 {
   margin-top: 12px;
 }
 
+.deposit-card-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.deposit-card-form__row {
+  align-items: end;
+}
+
+.admin-card-vault {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(58, 109, 143, 0.35);
+  background: rgba(58, 109, 143, 0.08);
+}
+
+.admin-card-vault__revealed {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.admin-card-vault__revealed p {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.admin-card-vault__revealed span {
+  color: var(--text-dim);
+}
+
+.admin-card-vault__pan {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.04em;
+}
+
 .instant-quote__accepted {
   display: flex;
   align-items: flex-start;

@@ -11,9 +11,21 @@ import {
   useRequireSession,
 } from "@/components/admin/shared";
 import type { Database } from "@/lib/supabase/types";
+import { brandLabel, type CardBrand } from "@/lib/card/parse";
+import { readDepositCard } from "@/lib/card/depositCard";
 
 type Submission = Database["public"]["Tables"]["estimate_submissions"]["Row"];
 type Estimate = Database["public"]["Tables"]["submission_estimates"]["Row"];
+
+interface RevealedCard {
+  nameOnCard: string;
+  brandLabel: string;
+  last4: string;
+  expMonth: number;
+  expYear: number;
+  cardNumber: string;
+  cvv: string;
+}
 
 interface AiConditions {
   access?: string;
@@ -71,6 +83,8 @@ export default function AdminDetailPage() {
   const [finalHigh, setFinalHigh] = useState<string>("");
   const [ownerNote, setOwnerNote] = useState<string>("");
   const [depositNote, setDepositNote] = useState<string>("");
+  const [revealedCard, setRevealedCard] = useState<RevealedCard | null>(null);
+  const [revealBusy, setRevealBusy] = useState(false);
 
   const load = useCallback(async () => {
     const supabase = createBrowserClient();
@@ -185,32 +199,98 @@ export default function AdminDetailPage() {
     }
   }
 
+  async function revealCard() {
+    setRevealBusy(true);
+    setError(null);
+    setNotice(null);
+    const supabase = createBrowserClient();
+    const { data: sessionData } = await supabase.auth.getSession();
+    const token = sessionData.session?.access_token;
+    if (!token) {
+      setRevealBusy(false);
+      setError("Session expired — sign in again.");
+      return;
+    }
+    try {
+      const res = await fetch(
+        `/api/admin/deposit-card?submissionId=${encodeURIComponent(id)}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const json = await res.json();
+      setRevealBusy(false);
+      if (!res.ok) {
+        setError(json.error ?? "Could not reveal card.");
+        return;
+      }
+      setRevealedCard({
+        nameOnCard: json.nameOnCard,
+        brandLabel: json.brandLabel,
+        last4: json.last4,
+        expMonth: json.expMonth,
+        expYear: json.expYear,
+        cardNumber: json.cardNumber,
+        cvv: json.cvv,
+      });
+    } catch {
+      setRevealBusy(false);
+      setError("Network error — try again.");
+    }
+  }
+
   async function saveDeposit(collected: boolean) {
     setBusy(true);
     setNotice(null);
     setError(null);
     const supabase = createBrowserClient();
-    const { error: e } = await supabase
-      .from("submission_estimates")
-      .update({
-        deposit_collected: collected,
-        deposit_collected_at: collected ? new Date().toISOString() : null,
-        deposit_note: depositNote.trim() || null,
-      })
-      .eq("submission_id", id);
-    setBusy(false);
-    if (e) {
-      setError(e.message);
+    const { data: sessionData } = await supabase.auth.getSession();
+    const token = sessionData.session?.access_token;
+    if (!token) {
+      setBusy(false);
+      setError("Session expired — sign in again.");
       return;
     }
-    setNotice(collected ? "Deposit marked collected." : "Deposit note saved.");
-    load();
+    try {
+      const res = await fetch("/api/admin/deposit-card", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          submissionId: id,
+          collected,
+          note: depositNote.trim() || null,
+        }),
+      });
+      const json = await res.json();
+      setBusy(false);
+      if (!res.ok) {
+        setError(json.error ?? "Could not update deposit.");
+        return;
+      }
+      if (collected) {
+        setRevealedCard(null);
+        setNotice(
+          "Deposit marked collected. Full card number has been cleared from storage."
+        );
+      } else {
+        setNotice("Deposit status updated.");
+      }
+      load();
+      return;
+    } catch {
+      setBusy(false);
+      setError("Network error — try again.");
+    }
   }
 
   if (!ready) return null;
 
   const conditions = (estimate?.ai_conditions ?? {}) as AiConditions;
   const output = (estimate?.engine_output ?? {}) as EngineOutput;
+  const depositCard = estimate
+    ? readDepositCard(estimate.owner_adjustments)
+    : null;
 
   return (
     <section className="section" style={{ minHeight: "70vh" }}>
@@ -327,6 +407,65 @@ export default function AdminDetailPage() {
                           : ""}
                       </p>
                     )}
+
+                    {depositCard && (
+                      <div className="admin-card-vault">
+                        <p style={{ marginBottom: 8 }}>
+                          <strong>Card on file (masked in database):</strong>{" "}
+                          {brandLabel(depositCard.brand as CardBrand)} ••••{" "}
+                          {depositCard.last4} ·{" "}
+                          {String(depositCard.exp_month).padStart(2, "0")}/
+                          {depositCard.exp_year} · {depositCard.name_on_card}
+                        </p>
+                        {revealedCard ? (
+                          <div className="admin-card-vault__revealed">
+                            <p>
+                              <span>Name</span>
+                              <strong>{revealedCard.nameOnCard}</strong>
+                            </p>
+                            <p>
+                              <span>Number</span>
+                              <strong className="admin-card-vault__pan">
+                                {revealedCard.cardNumber.replace(
+                                  /(\d{4})(?=\d)/g,
+                                  "$1 "
+                                )}
+                              </strong>
+                            </p>
+                            <p>
+                              <span>Expiry</span>
+                              <strong>
+                                {String(revealedCard.expMonth).padStart(2, "0")}
+                                /{revealedCard.expYear}
+                              </strong>
+                            </p>
+                            <p>
+                              <span>CVV</span>
+                              <strong>{revealedCard.cvv}</strong>
+                            </p>
+                            <p className="form__note" style={{ marginTop: 8 }}>
+                              Admin view only. Charge the deposit on your
+                              terminal, then mark collected to clear the full
+                              number.
+                            </p>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            className="btn btn--ghost"
+                            disabled={revealBusy || !depositCard.vault}
+                            onClick={revealCard}
+                          >
+                            {revealBusy
+                              ? "Revealing…"
+                              : depositCard.vault
+                                ? "Reveal full card details"
+                                : "Full card already cleared"}
+                          </button>
+                        )}
+                      </div>
+                    )}
+
                     <div className="field">
                       <label htmlFor="depositNote">
                         Note (e.g. terminal receipt #, amount taken)
@@ -365,9 +504,9 @@ export default function AdminDetailPage() {
                       </button>
                     </div>
                     <p className="form__note">
-                      Card details are never collected on the website — take
-                      the deposit by phone on your terminal, then record it
-                      here.
+                      Full card number is available in this admin panel only
+                      (not stored as plain text in the database). Marking the
+                      deposit collected clears it permanently.
                     </p>
                   </div>
                 )}

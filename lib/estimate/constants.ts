@@ -5,6 +5,7 @@
 export const SHOW_PRICE_MIN_CONFIDENCE = 50;
 
 /** Refundable deposit percentage to reserve a customer's priority slot,
- *  per the client's decision. Collected by phone on the owner's existing
- *  terminal — never captured on this site. */
+ *  per the client's decision. Card details are captured on accept so the
+ *  owner can charge this on their terminal from the admin dashboard; the
+ *  full PAN is never stored in plain text in the database. */
 export const DEPOSIT_PERCENT = 20;

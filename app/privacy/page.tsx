@@ -48,14 +48,15 @@ export default function PrivacyPage() {
           </li>
         </ul>
         <p>
-          <strong>
-            We do not collect, transmit, or store credit card, debit card, or
-            other payment information through this website
-          </strong>
-          , including when you accept an estimate. If a deposit is required to
-          reserve your project, our team collects it directly by phone using
-          our own secure payment terminal — never through a web form. We also
-          do not use advertising or tracking cookies.
+          When you choose to accept an estimate and reserve a priority slot, you
+          may submit payment card details for a refundable deposit (currently
+          20% of the estimated range). We store only limited card metadata
+          (name on card, brand, last four digits, and expiry) in our database.
+          The full card number and security code are not kept as plain text in
+          the database — they are available only to authorized staff in our
+          private admin dashboard long enough to process the deposit on our
+          payment terminal, then cleared. We also do not use advertising or
+          tracking cookies.
         </p>
 
         <h2>How we use your information</h2>
