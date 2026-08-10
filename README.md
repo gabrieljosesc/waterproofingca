@@ -53,7 +53,7 @@ warning, persists nothing).
 ## Content & SEO
 
 - All copy, contact details, services, FAQs and pricing live in `lib/site.ts`.
-  **Phone / email / address are mock placeholders — replace before launch.**
+  Phone, email and address are the client's real business details.
 - Pricing: exterior waterproofing **from $275/linear ft** ($4,000 min job),
   interior **from $120/linear ft** ($2,800 min), residential & commercial
   quotes. Rates centralized in `site.pricing`.

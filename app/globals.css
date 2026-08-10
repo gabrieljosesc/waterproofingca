@@ -1246,6 +1246,92 @@ h3 {
   margin-bottom: 16px;
 }
 
+.wizard__spinner {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 3px solid var(--accent-soft);
+  border-top-color: var(--accent);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- Instant AI estimate result ---- */
+.instant-quote {
+  background: var(--bg);
+  border: 1px solid var(--accent-strong);
+  border-radius: 12px;
+  padding: 22px 24px;
+  text-align: center;
+  margin: 14px 0 18px;
+}
+
+.instant-quote__label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+}
+
+.instant-quote__figure {
+  font-size: clamp(1.7rem, 5vw, 2.2rem);
+  font-weight: 800;
+  color: var(--accent);
+  margin-top: 6px;
+  line-height: 1.15;
+}
+
+.instant-quote__rebate {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.instant-quote__net {
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 4px;
+}
+
+.instant-quote__notes {
+  border-left: 3px solid var(--accent-strong);
+  padding-left: 14px;
+  margin: 16px 0;
+}
+
+.instant-quote__notes strong {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.instant-quote__notes p {
+  font-style: italic;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.instant-quote__terms {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+
+.instant-quote__terms li::before {
+  content: "· ";
+  color: var(--accent);
+}
+
 /* ---- Legal pages ---- */
 .legal {
   max-width: 760px;

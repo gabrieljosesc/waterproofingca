@@ -6,15 +6,15 @@ import { EstimateWizard } from "@/components/estimate/EstimateWizard";
 import { CheckIcon } from "@/components/Icons";
 
 export const metadata: Metadata = {
-  title: "Get an Instant Photo Estimate",
+  title: "Get an Instant AI Photo Estimate",
   description:
-    "Upload a few photos of your basement or foundation and get a customized waterproofing estimate range for your Southern Ontario property — reviewed by our team before it's sent.",
+    "Upload a few photos of your basement or foundation and get an instant AI-powered waterproofing estimate range for your Southern Ontario property — final price confirmed at a free site visit.",
 };
 
 const how = [
   "Answer a few quick questions about your property",
   "Add photos of the wall, access and the leak area",
-  "We review everything and send your estimate range",
+  "Get your instant AI estimate range on the spot",
 ];
 
 export default function EstimatePage() {
@@ -64,9 +64,9 @@ export default function EstimatePage() {
                 ))}
               </ul>
               <p className="section-lead" style={{ marginBottom: 18 }}>
-                Every estimate is reviewed by our team before you see it, and
-                the final price is always confirmed on site. For active
-                flooding, calling is faster:
+                Your instant estimate is a preliminary range — the final price
+                is always confirmed at a free on-site visit with our team. For
+                active flooding, calling is faster:
               </p>
               <a href={site.phoneHref} className="btn btn--ghost">
                 {site.phone}

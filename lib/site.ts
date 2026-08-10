@@ -12,12 +12,12 @@ export const site = {
     "DryFort Waterproofing is Southern Ontario's 24/7 emergency basement waterproofing company — exterior & interior foundation waterproofing, sump pumps, crack repair and flood response for homes and commercial buildings. Transparent pricing from $275 per linear foot.",
   url: "https://www.dryfortwaterproofing.ca",
 
-  // --- CONTACT DETAILS (mock placeholders — replace before launch) ---
-  phone: "(905) 555-0134",
-  phoneHref: "tel:+19055550134",
+  // --- CONTACT DETAILS (real business details, provided by client) ---
+  phone: "(647) 762-0775",
+  phoneHref: "tel:+16477620775",
   email: "info@dryfortwaterproofing.ca",
   emailHref: "mailto:info@dryfortwaterproofing.ca",
-  address: "45 Lakeshore Rd E, Unit 2, Mississauga, ON",
+  address: "885 Don Mills Ave, Suite 100, Toronto, ON",
   hours: "Office: Mon–Fri 8:00 AM – 6:00 PM · Emergency crews: 24/7",
 
   pricing: {

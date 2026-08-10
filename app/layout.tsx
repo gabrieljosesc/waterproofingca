@@ -57,8 +57,8 @@ function StructuredData() {
     priceRange: "from $275 per linear foot",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "45 Lakeshore Rd E, Unit 2",
-      addressLocality: "Mississauga",
+      streetAddress: "885 Don Mills Ave, Suite 100",
+      addressLocality: "Toronto",
       addressRegion: "ON",
       addressCountry: "CA",
     },

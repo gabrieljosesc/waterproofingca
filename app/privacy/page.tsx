@@ -67,13 +67,13 @@ export default function PrivacyPage() {
 
         <h2>AI analysis of your photos</h2>
         <p>
-          To prepare your estimate faster, the photos you upload are analyzed by
-          an artificial-intelligence service (provided by Anthropic) that
-          identifies visible site conditions — for example ground surfaces,
-          equipment access and obstructions. The AI produces a draft only:{" "}
+          The photos you upload are analyzed by an artificial-intelligence
+          service (provided by Anthropic) that identifies visible site
+          conditions — for example ground surfaces, equipment access and
+          obstructions — to produce your instant estimate range.{" "}
           <strong>
-            every estimate is reviewed and approved by our team before it is
-            sent to you
+            An instant estimate is preliminary only; the final price is always
+            confirmed by our team at an on-site visit
           </strong>
           . Photos are transmitted securely to the AI provider for this analysis
           and are not used by us to train AI models.

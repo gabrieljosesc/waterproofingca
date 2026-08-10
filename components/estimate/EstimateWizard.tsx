@@ -1,9 +1,26 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CheckIcon } from "@/components/Icons";
+import { CheckIcon, PhoneIcon } from "@/components/Icons";
+import { site } from "@/lib/site";
 
-type Status = "editing" | "submitting" | "done" | "error";
+type Status = "editing" | "submitting" | "analyzing" | "done" | "error";
+
+/** Customer-safe instant estimate returned by /api/estimate/[id]/analyze. */
+interface InstantEstimate {
+  showPrice: boolean;
+  rangeLow: number;
+  rangeHigh: number;
+  rebate: number;
+  netLow: number;
+  netHigh: number;
+  rebateCity: string | null;
+  summary?: string;
+  confidence: number;
+  validDays: number;
+}
+
+const money = (n: number) => "$" + Math.round(n).toLocaleString("en-CA");
 
 const PHOTO_GROUPS = [
   {
@@ -34,6 +51,7 @@ export function EstimateWizard() {
   const [step, setStep] = useState(0);
   const [status, setStatus] = useState<Status>("editing");
   const [error, setError] = useState<string | null>(null);
+  const [instant, setInstant] = useState<InstantEstimate | null>(null);
 
   // form state
   const [form, setForm] = useState<Record<string, string>>({});
@@ -100,11 +118,20 @@ export function EstimateWizard() {
         }
         await fetch("/api/estimate/photos", { method: "POST", body: fd });
 
-        // Kick off AI analysis in the background — the owner reviews the draft
-        // later, so we don't make the customer wait for it.
-        fetch(`/api/estimate/${json.submissionId}/analyze`, {
-          method: "POST",
-        }).catch(() => {});
+        // Instant AI estimate: analyze now and show the customer the range.
+        // Any failure falls back to the plain "we'll be in touch" message.
+        setStatus("analyzing");
+        try {
+          const aRes = await fetch(`/api/estimate/${json.submissionId}/analyze`, {
+            method: "POST",
+          });
+          const aJson = await aRes.json();
+          if (aRes.ok && aJson.analyzed && aJson.customer) {
+            setInstant(aJson.customer as InstantEstimate);
+          }
+        } catch {
+          // fall through to the generic confirmation
+        }
       }
 
       setStatus("done");
@@ -112,6 +139,119 @@ export function EstimateWizard() {
       setStatus("error");
       setError(err instanceof Error ? err.message : "Something went wrong.");
     }
+  }
+
+  if (status === "analyzing") {
+    return (
+      <div className="form wizard">
+        <div className="wizard__done-icon wizard__done-icon--spin">
+          <span className="wizard__spinner" />
+        </div>
+        <h3 style={{ fontSize: "1.4rem", marginBottom: 10 }}>
+          Our AI is reviewing your photos…
+        </h3>
+        <p style={{ color: "var(--text-muted)" }}>
+          It&apos;s reading your foundation wall, access route and site
+          conditions to build your estimate. This usually takes about 15
+          seconds — please keep this page open.
+        </p>
+      </div>
+    );
+  }
+
+  if (status === "done" && instant?.showPrice) {
+    return (
+      <div className="form wizard">
+        <div className="wizard__done-icon">
+          <CheckIcon size={28} />
+        </div>
+        <h3 style={{ fontSize: "1.4rem", marginBottom: 6 }}>
+          Your instant estimate
+        </h3>
+        <div className="instant-quote">
+          <div className="instant-quote__label">
+            Estimated range (before HST)
+          </div>
+          <div className="instant-quote__figure">
+            {money(instant.rangeLow)} – {money(instant.rangeHigh)}
+          </div>
+          {instant.rebate > 0 && (
+            <div className="instant-quote__rebate">
+              Est. municipal rebate on eligible items
+              {instant.rebateCity ? ` (${instant.rebateCity})` : ""}: −
+              {money(instant.rebate)}
+              <div className="instant-quote__net">
+                Est. net after rebate: {money(instant.netLow)} –{" "}
+                {money(instant.netHigh)}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {instant.summary && (
+          <div className="instant-quote__notes">
+            <strong>What our AI noticed in your photos:</strong>
+            <p>“{instant.summary}”</p>
+          </div>
+        )}
+
+        <ul className="instant-quote__terms">
+          <li>
+            This is a preliminary estimate based on your photos — not a final
+            price.
+          </li>
+          <li>
+            The final price is confirmed at your <strong>free on-site
+            visit</strong>; hidden conditions (soil, utilities, foundation
+            state) can change it.
+          </li>
+          <li>Estimate valid for {instant.validDays} days.</li>
+          {instant.rebate > 0 && (
+            <li>
+              Rebate figures are estimates only and subject to your
+              municipality&apos;s approval.
+            </li>
+          )}
+        </ul>
+
+        <p style={{ color: "var(--text-muted)", marginTop: 14 }}>
+          Our team has your details and will contact you to book the site
+          visit. Want it sooner?
+        </p>
+        <a href={site.phoneHref} className="btn btn--primary" style={{ marginTop: 10 }}>
+          <PhoneIcon size={18} /> Call {site.phone}
+        </a>
+      </div>
+    );
+  }
+
+  if (status === "done" && instant && !instant.showPrice) {
+    return (
+      <div className="form wizard">
+        <div className="wizard__done-icon">
+          <CheckIcon size={28} />
+        </div>
+        <h3 style={{ fontSize: "1.4rem", marginBottom: 10 }}>
+          Thanks — your property needs a closer look
+        </h3>
+        {instant.summary && (
+          <div className="instant-quote__notes">
+            <strong>What our AI noticed in your photos:</strong>
+            <p>“{instant.summary}”</p>
+          </div>
+        )}
+        <p style={{ color: "var(--text-muted)" }}>
+          Based on the photos, we can&apos;t put a reliable number on this one
+          without seeing it in person — some conditions (like excavation depth
+          or access) need eyes on site. Our team will contact you to book a{" "}
+          <strong>free site visit</strong> and give you an exact price there.
+          If water is actively coming in, call our 24/7 line now.
+        </p>
+        <a href={site.phoneHref} className="btn btn--primary" style={{ marginTop: 14 }}>
+          <PhoneIcon size={18} /> Call {site.phone}
+        </a>
+      </div>
+    );
   }
 
   if (status === "done") {
@@ -124,10 +264,10 @@ export function EstimateWizard() {
           Request received — thank you!
         </h3>
         <p style={{ color: "var(--text-muted)" }}>
-          Our team is reviewing your photos and details now. You&apos;ll get a
-          written estimate range back within one business day, or much sooner if
-          it&apos;s urgent. If water is actively coming in, call our 24/7 line
-          for immediate dispatch.
+          Our team is reviewing your details now. You&apos;ll hear back within
+          one business day, or much sooner if it&apos;s urgent — adding photos
+          helps us give you an instant estimate next time. If water is actively
+          coming in, call our 24/7 line for immediate dispatch.
         </p>
       </div>
     );

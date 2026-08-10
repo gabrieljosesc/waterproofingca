@@ -30,14 +30,14 @@ export default function TermsPage() {
 
         <h2>Online estimates are preliminary</h2>
         <p>
-          The estimate tool provides a <strong>preliminary price range</strong>{" "}
-          based on the photographs, measurements and information you submit.
-          Artificial intelligence may assist in identifying visible site
-          conditions and preparing the range, and every estimate is reviewed by
-          our team before it is sent. An online estimate is{" "}
+          The estimate tool provides an instant,{" "}
+          <strong>preliminary price range</strong> generated with the
+          assistance of artificial intelligence from the photographs,
+          measurements and information you submit. An online estimate is{" "}
           <strong>not</strong> a structural assessment, engineering report,
           building inspection, drainage inspection, or a guarantee of the source
-          of water entry.
+          of water entry, and it is not a contractual offer — the final price
+          is provided by our team after an on-site assessment.
         </p>
         <ul>
           <li>

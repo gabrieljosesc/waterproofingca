@@ -12,6 +12,14 @@ import { calculateEstimate } from "@/lib/pricing";
 
 const MAX_PHOTOS = 12; // cap AI cost per submission
 
+/** Below this AI confidence we don't show the customer a number — the site
+ *  visit does the talking instead (per the client's own spec: <50% → no
+ *  automatic price). */
+const SHOW_PRICE_MIN_CONFIDENCE = 50;
+
+// Photo downloads + the AI call can exceed Vercel's default function window.
+export const maxDuration = 60;
+
 function mediaTypeFor(path: string): PhotoInput["mediaType"] {
   if (path.endsWith(".png")) return "image/png";
   if (path.endsWith(".webp")) return "image/webp";
@@ -20,9 +28,12 @@ function mediaTypeFor(path: string): PhotoInput["mediaType"] {
 
 /**
  * Run AI analysis on a submission's photos, price it with the engine, and store
- * the result as a draft estimate for owner review. Idempotent per submission
- * (the estimate row is upserted). This is Phase 1: the AI drafts, the owner
- * approves before the customer sees a price.
+ * the estimate. The response includes a customer-safe instant estimate (shown
+ * directly in the wizard, per the client's decision): the range, the AI's
+ * observations, and whether the number is confident enough to display at all.
+ * The owner still gets the lead alert and the dashboard record for the
+ * site-visit follow-up. Idempotent per submission (the estimate row is
+ * upserted).
  */
 export async function POST(
   _request: Request,
@@ -125,6 +136,12 @@ export async function POST(
     .update({ status: "ai_analyzed" })
     .eq("id", id);
 
+  // Customer-facing instant estimate. Only show a number when the AI is
+  // confident enough; otherwise the wizard shows a "needs a closer look"
+  // message and the site visit does the pricing conversation.
+  const showPrice =
+    conditions.overall_confidence >= SHOW_PRICE_MIN_CONFIDENCE;
+
   return NextResponse.json({
     ok: true,
     analyzed: true,
@@ -134,5 +151,17 @@ export async function POST(
     rangeHigh: estimate.rangeHigh,
     rebate: estimate.rebate.estimatedRebate,
     warnings,
+    customer: {
+      showPrice,
+      rangeLow: estimate.rangeLow,
+      rangeHigh: estimate.rangeHigh,
+      rebate: estimate.rebate.estimatedRebate,
+      netLow: estimate.netAfterRebateLow,
+      netHigh: estimate.netAfterRebateHigh,
+      rebateCity: submission.rebate_city,
+      summary: conditions.summary,
+      confidence: conditions.overall_confidence,
+      validDays: estimate.quoteValidDays,
+    },
   });
 }
