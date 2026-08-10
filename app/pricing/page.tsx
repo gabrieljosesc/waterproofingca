@@ -6,9 +6,9 @@ import { CtaBand } from "@/components/CtaBand";
 import { CardIcon, CheckIcon } from "@/components/Icons";
 
 export const metadata: Metadata = {
-  title: "Pricing & Costs",
+  title: "Pricing — Instant Quote Available",
   description:
-    "Transparent basement waterproofing pricing in Southern Ontario: exterior foundation waterproofing from $275 per linear foot, interior from $120. Free itemized quotes for residential and commercial properties.",
+    "Transparent basement waterproofing pricing in Southern Ontario with instant AI photo quotes: exterior foundation waterproofing from $275 per linear foot, interior from $120. Free itemized quotes for residential and commercial properties.",
 };
 
 const included = [
@@ -40,11 +40,13 @@ export default function PricingPage() {
           <div className="breadcrumb">
             <Link href="/">Home</Link> / Pricing
           </div>
-          <span className="eyebrow">Transparent Pricing</span>
+          <span className="eyebrow">Instant Quote Available</span>
           <h1>One Honest Rate. No Surprises.</h1>
           <p>
             Waterproofing quotes shouldn&apos;t be a mystery. Ours start with a
-            number you can plan around — published right here.
+            number you can plan around — published right here. And unlike
+            anyone else, you can get an instant quote for your own property
+            right now: upload a few photos and our AI prices it on the spot.
           </p>
         </div>
       </section>
@@ -68,7 +70,7 @@ export default function PricingPage() {
             on-site assessment.
           </p>
           <Link href="/estimate" className="btn btn--primary">
-            Get a Photo Estimate for Your Home
+            Get Your Instant Quote
           </Link>
           <div
             className="card"

@@ -175,7 +175,7 @@ export default function HomePage() {
       {/* Pricing strip */}
       <section className="section section--tight">
         <div className="container center">
-          <span className="eyebrow">Straightforward Pricing</span>
+          <span className="eyebrow">Instant Quote Available</span>
           <h2 className="section-title">Know the number before we dig</h2>
           <div className="price-banner">
             <span className="price-banner__figure">From $275</span>
