@@ -1332,6 +1332,40 @@ h3 {
   color: var(--accent);
 }
 
+.instant-quote__accept {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: 16px;
+}
+
+.instant-quote__accept .btn {
+  margin-top: 12px;
+}
+
+.instant-quote__accepted {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.4);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-top: 16px;
+  color: #86efac;
+}
+
+.instant-quote__accepted strong {
+  color: #eaf2f8;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.instant-quote__accepted p {
+  color: #bbf7d0;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
 /* ---- Legal pages ---- */
 .legal {
   max-width: 760px;
@@ -1471,6 +1505,10 @@ h3 {
   color: #93c5fd;
   border-color: rgba(147, 197, 253, 0.4);
 }
+.badge--accepted {
+  color: #c4b5fd;
+  border-color: rgba(196, 181, 253, 0.5);
+}
 .badge--approved,
 .badge--sent {
   color: #86efac;
@@ -1485,6 +1523,30 @@ h3 {
 .badge--outside_area {
   color: #fca5a5;
   border-color: rgba(248, 113, 113, 0.4);
+}
+
+.admin-deposit-flag {
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.admin-deposit-flag--due {
+  color: #fcd34d;
+}
+
+.admin-deposit-flag--done {
+  color: #86efac;
+}
+
+.admin-deposit-card--due {
+  border-color: rgba(252, 211, 77, 0.5);
+  background: linear-gradient(135deg, var(--surface) 0%, rgba(252, 211, 77, 0.06) 100%);
+}
+
+.admin-deposit-card--done {
+  border-color: rgba(74, 222, 128, 0.4);
+  background: linear-gradient(135deg, var(--surface) 0%, rgba(74, 222, 128, 0.06) 100%);
 }
 
 .admin-grid {

@@ -37,6 +37,7 @@ export const STATUS_LABELS: Record<string, string> = {
   new: "New",
   ai_analyzed: "AI drafted",
   needs_review: "Needs review",
+  accepted: "Accepted — call for deposit",
   approved: "Approved",
   sent: "Sent",
   more_photos_requested: "More photos",

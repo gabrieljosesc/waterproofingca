@@ -9,13 +9,9 @@ import { isAiConfigured } from "@/lib/ai/client";
 import { analyzePhotos, type PhotoInput } from "@/lib/ai/vision";
 import { conditionsToInput } from "@/lib/estimate/conditionsToInput";
 import { calculateEstimate } from "@/lib/pricing";
+import { DEPOSIT_PERCENT, SHOW_PRICE_MIN_CONFIDENCE } from "@/lib/estimate/constants";
 
 const MAX_PHOTOS = 12; // cap AI cost per submission
-
-/** Below this AI confidence we don't show the customer a number — the site
- *  visit does the talking instead (per the client's own spec: <50% → no
- *  automatic price). */
-const SHOW_PRICE_MIN_CONFIDENCE = 50;
 
 // Photo downloads + the AI call can exceed Vercel's default function window.
 export const maxDuration = 60;
@@ -162,6 +158,9 @@ export async function POST(
       summary: conditions.summary,
       confidence: conditions.overall_confidence,
       validDays: estimate.quoteValidDays,
+      depositPercent: DEPOSIT_PERCENT,
+      depositLow: Math.round((estimate.rangeLow * DEPOSIT_PERCENT) / 100),
+      depositHigh: Math.round((estimate.rangeHigh * DEPOSIT_PERCENT) / 100),
     },
   });
 }

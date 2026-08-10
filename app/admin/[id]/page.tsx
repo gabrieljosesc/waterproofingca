@@ -70,6 +70,7 @@ export default function AdminDetailPage() {
   const [finalLow, setFinalLow] = useState<string>("");
   const [finalHigh, setFinalHigh] = useState<string>("");
   const [ownerNote, setOwnerNote] = useState<string>("");
+  const [depositNote, setDepositNote] = useState<string>("");
 
   const load = useCallback(async () => {
     const supabase = createBrowserClient();
@@ -95,6 +96,7 @@ export default function AdminDetailPage() {
     if (est) {
       setFinalLow(String(est.final_low ?? est.range_low ?? ""));
       setFinalHigh(String(est.final_high ?? est.range_high ?? ""));
+      setDepositNote(est.deposit_note ?? "");
     }
     if (photos?.length) {
       const { data: signed } = await supabase.storage
@@ -181,6 +183,28 @@ export default function AdminDetailPage() {
       setBusy(false);
       setError("Network error — try again.");
     }
+  }
+
+  async function saveDeposit(collected: boolean) {
+    setBusy(true);
+    setNotice(null);
+    setError(null);
+    const supabase = createBrowserClient();
+    const { error: e } = await supabase
+      .from("submission_estimates")
+      .update({
+        deposit_collected: collected,
+        deposit_collected_at: collected ? new Date().toISOString() : null,
+        deposit_note: depositNote.trim() || null,
+      })
+      .eq("submission_id", id);
+    setBusy(false);
+    if (e) {
+      setError(e.message);
+      return;
+    }
+    setNotice(collected ? "Deposit marked collected." : "Deposit note saved.");
+    load();
   }
 
   if (!ready) return null;
@@ -271,6 +295,83 @@ export default function AdminDetailPage() {
 
               {/* Right: AI read + pricing + actions */}
               <div>
+                {estimate?.customer_accepted_at && (
+                  <div
+                    className={
+                      estimate.deposit_collected
+                        ? "card admin-card admin-deposit-card admin-deposit-card--done"
+                        : "card admin-card admin-deposit-card admin-deposit-card--due"
+                    }
+                  >
+                    <h3>🔒 Customer accepted — reserve priority slot</h3>
+                    <p className="admin-sub" style={{ marginBottom: 10 }}>
+                      Accepted{" "}
+                      {new Date(estimate.customer_accepted_at).toLocaleString(
+                        "en-CA"
+                      )}
+                    </p>
+                    <p style={{ marginBottom: 12 }}>
+                      Deposit due ({Number(estimate.deposit_percent ?? 20)}%):{" "}
+                      <strong>
+                        {money(estimate.deposit_low)} –{" "}
+                        {money(estimate.deposit_high)}
+                      </strong>
+                    </p>
+                    {estimate.deposit_collected && (
+                      <p className="admin-sub" style={{ marginBottom: 12 }}>
+                        ✓ Collected{" "}
+                        {estimate.deposit_collected_at
+                          ? new Date(
+                              estimate.deposit_collected_at
+                            ).toLocaleString("en-CA")
+                          : ""}
+                      </p>
+                    )}
+                    <div className="field">
+                      <label htmlFor="depositNote">
+                        Note (e.g. terminal receipt #, amount taken)
+                      </label>
+                      <input
+                        id="depositNote"
+                        value={depositNote}
+                        onChange={(e) => setDepositNote(e.target.value)}
+                        placeholder="Collected $2,000 via terminal, ref #4521"
+                      />
+                    </div>
+                    <div className="admin-actions">
+                      {!estimate.deposit_collected ? (
+                        <button
+                          className="btn btn--primary"
+                          disabled={busy}
+                          onClick={() => saveDeposit(true)}
+                        >
+                          Mark deposit collected
+                        </button>
+                      ) : (
+                        <button
+                          className="btn btn--ghost"
+                          disabled={busy}
+                          onClick={() => saveDeposit(false)}
+                        >
+                          Undo — not collected
+                        </button>
+                      )}
+                      <button
+                        className="btn btn--ghost"
+                        disabled={busy}
+                        onClick={() => saveDeposit(estimate.deposit_collected)}
+                      >
+                        Save note
+                      </button>
+                    </div>
+                    <p className="form__note">
+                      Card details are never collected on the website — take
+                      the deposit by phone on your terminal, then record it
+                      here.
+                    </p>
+                  </div>
+                )}
+
                 {estimate ? (
                   <>
                     <div className="card admin-card">

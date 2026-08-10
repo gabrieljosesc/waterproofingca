@@ -48,8 +48,14 @@ export default function PrivacyPage() {
           </li>
         </ul>
         <p>
-          We do not collect payment information through this website, and we do
-          not use advertising or tracking cookies.
+          <strong>
+            We do not collect, transmit, or store credit card, debit card, or
+            other payment information through this website
+          </strong>
+          , including when you accept an estimate. If a deposit is required to
+          reserve your project, our team collects it directly by phone using
+          our own secure payment terminal — never through a web form. We also
+          do not use advertising or tracking cookies.
         </p>
 
         <h2>How we use your information</h2>

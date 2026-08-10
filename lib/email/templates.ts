@@ -94,6 +94,83 @@ export function ownerAlertEmail(input: OwnerAlertInput): {
   return { subject, html, text };
 }
 
+// -------------------------------------------------------- quote acceptance
+
+export interface QuoteAcceptedInput {
+  name: string;
+  email: string;
+  phone?: string | null;
+  city?: string | null;
+  service?: string | null;
+  rangeLow: number;
+  rangeHigh: number;
+  depositPercent: number;
+  depositLow: number;
+  depositHigh: number;
+  dashboardUrl?: string;
+}
+
+/**
+ * Owner alert when a customer accepts their instant estimate and wants to
+ * reserve their slot. No card details anywhere here — the whole point of
+ * this email is to prompt a phone call so the deposit is taken on the
+ * owner's own terminal.
+ */
+export function quoteAcceptedEmail(input: QuoteAcceptedInput): {
+  subject: string;
+  html: string;
+  text: string;
+} {
+  const subject = `🔒 Quote accepted — call to collect deposit — ${input.name}${
+    input.city ? `, ${input.city}` : ""
+  }`;
+
+  const rows: Array<[string, string]> = [
+    ["Name", input.name],
+    ["Email", input.email],
+    ...(input.phone ? ([["Phone", input.phone]] as Array<[string, string]>) : []),
+    ...(input.city ? ([["City", input.city]] as Array<[string, string]>) : []),
+    ...(input.service ? ([["Service", input.service]] as Array<[string, string]>) : []),
+    ["Estimate range", `${money(input.rangeLow)} – ${money(input.rangeHigh)}`],
+  ];
+
+  const html = wrap(
+    subject,
+    `
+    <p style="color:#0a7a3d;font-weight:bold;">This customer accepted their instant estimate and wants to lock in their priority slot.</p>
+    ${rows
+      .map(
+        ([k, v]) =>
+          `<p style="margin:4px 0;"><span style="color:#8395a7;">${k}:</span> <strong>${v}</strong></p>`
+      )
+      .join("")}
+    <div style="background:#f2f5f9;border-radius:10px;padding:16px 20px;margin:16px 0;text-align:center;">
+      <p style="margin:0;color:#8395a7;font-size:12px;letter-spacing:1px;">DEPOSIT DUE (${input.depositPercent}%)</p>
+      <p style="margin:6px 0 0;font-size:22px;font-weight:bold;color:#3a6d8f;">${money(input.depositLow)} – ${money(input.depositHigh)}</p>
+    </div>
+    <p style="font-size:13px;color:#5b6b7b;">Call the customer to confirm details and collect the refundable deposit on your terminal, then mark it collected in the dashboard.</p>
+    ${
+      input.dashboardUrl
+        ? `<p style="margin-top:20px;"><a href="${input.dashboardUrl}" style="background:#3a6d8f;color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Open in dashboard</a></p>`
+        : ""
+    }`
+  );
+
+  const text = [
+    subject,
+    "",
+    "This customer accepted their instant estimate and wants to lock in their priority slot.",
+    "",
+    ...rows.map(([k, v]) => `${k}: ${v}`),
+    `Deposit due (${input.depositPercent}%): ${money(input.depositLow)} – ${money(input.depositHigh)}`,
+    "",
+    "Call the customer to collect the refundable deposit on your terminal, then mark it collected in the dashboard.",
+    input.dashboardUrl ? `\nOpen: ${input.dashboardUrl}` : "",
+  ].join("\n");
+
+  return { subject, html, text };
+}
+
 // ---------------------------------------------------------- customer estimate
 
 export interface CustomerEstimateInput {

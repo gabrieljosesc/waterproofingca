@@ -125,6 +125,13 @@ export type Database = {
           ai_conditions: Json | null;
           ai_confidence: number | null;
           created_at: string;
+          customer_accepted_at: string | null;
+          deposit_collected: boolean;
+          deposit_collected_at: string | null;
+          deposit_high: number | null;
+          deposit_low: number | null;
+          deposit_note: string | null;
+          deposit_percent: number;
           engine_input: Json | null;
           engine_output: Json | null;
           final_high: number | null;
@@ -144,6 +151,13 @@ export type Database = {
           ai_conditions?: Json | null;
           ai_confidence?: number | null;
           created_at?: string;
+          customer_accepted_at?: string | null;
+          deposit_collected?: boolean;
+          deposit_collected_at?: string | null;
+          deposit_high?: number | null;
+          deposit_low?: number | null;
+          deposit_note?: string | null;
+          deposit_percent?: number;
           engine_input?: Json | null;
           engine_output?: Json | null;
           final_high?: number | null;

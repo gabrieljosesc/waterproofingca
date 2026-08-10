@@ -18,6 +18,9 @@ interface InstantEstimate {
   summary?: string;
   confidence: number;
   validDays: number;
+  depositPercent: number;
+  depositLow: number;
+  depositHigh: number;
 }
 
 const money = (n: number) => "$" + Math.round(n).toLocaleString("en-CA");
@@ -52,6 +55,10 @@ export function EstimateWizard() {
   const [status, setStatus] = useState<Status>("editing");
   const [error, setError] = useState<string | null>(null);
   const [instant, setInstant] = useState<InstantEstimate | null>(null);
+  const [submissionId, setSubmissionId] = useState<string | null>(null);
+  const [accepting, setAccepting] = useState(false);
+  const [accepted, setAccepted] = useState(false);
+  const [acceptError, setAcceptError] = useState<string | null>(null);
 
   // form state
   const [form, setForm] = useState<Record<string, string>>({});
@@ -105,6 +112,7 @@ export function EstimateWizard() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Something went wrong.");
+      setSubmissionId(json.submissionId ?? null);
 
       // Upload photos if we have a stored submission to attach them to.
       if (json.submissionId && photoCount > 0) {
@@ -138,6 +146,26 @@ export function EstimateWizard() {
     } catch (err) {
       setStatus("error");
       setError(err instanceof Error ? err.message : "Something went wrong.");
+    }
+  }
+
+  async function acceptQuote() {
+    if (!submissionId) return;
+    setAccepting(true);
+    setAcceptError(null);
+    try {
+      const res = await fetch(`/api/estimate/${submissionId}/accept`, {
+        method: "POST",
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? "Something went wrong.");
+      setAccepted(true);
+    } catch (err) {
+      setAcceptError(
+        err instanceof Error ? err.message : "Something went wrong."
+      );
+    } finally {
+      setAccepting(false);
     }
   }
 
@@ -214,13 +242,46 @@ export function EstimateWizard() {
           )}
         </ul>
 
-        <p style={{ color: "var(--text-muted)", marginTop: 14 }}>
-          Our team has your details and will contact you to book the site
-          visit. Want it sooner?
-        </p>
-        <a href={site.phoneHref} className="btn btn--primary" style={{ marginTop: 10 }}>
-          <PhoneIcon size={18} /> Call {site.phone}
-        </a>
+        {accepted ? (
+          <div className="instant-quote__accepted">
+            <CheckIcon size={20} />
+            <div>
+              <strong>You&apos;re reserved!</strong>
+              <p>
+                We&apos;ll call you within one business day to confirm your{" "}
+                {instant.depositPercent}% refundable deposit (
+                {money(instant.depositLow)} – {money(instant.depositHigh)}) and
+                lock in your priority slot. No payment is taken on this site —
+                we&apos;ll process it by phone.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="instant-quote__accept">
+            {acceptError && <div className="form__error">{acceptError}</div>}
+            <p style={{ color: "var(--text-muted)" }}>
+              Want to lock in your spot? Accepting reserves your project in our
+              schedule ahead of other requests. A {instant.depositPercent}%
+              refundable deposit ({money(instant.depositLow)} –{" "}
+              {money(instant.depositHigh)}) confirms your priority slot — our
+              team will call you to take it by phone. No card details are
+              collected on this site.
+            </p>
+            <div className="cta-band__actions" style={{ justifyContent: "flex-start" }}>
+              <button
+                type="button"
+                className="btn btn--primary"
+                onClick={acceptQuote}
+                disabled={accepting}
+              >
+                {accepting ? "Reserving…" : "Accept Quote & Reserve My Slot"}
+              </button>
+              <a href={site.phoneHref} className="btn btn--ghost">
+                <PhoneIcon size={18} /> Call {site.phone}
+              </a>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

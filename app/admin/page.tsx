@@ -16,6 +16,10 @@ type EstimateSummary = {
   ai_confidence: number | null;
   range_low: number | null;
   range_high: number | null;
+  customer_accepted_at: string | null;
+  deposit_low: number | null;
+  deposit_high: number | null;
+  deposit_collected: boolean;
 };
 
 type SubmissionRow =
@@ -42,7 +46,7 @@ export default function AdminListPage() {
     supabase
       .from("estimate_submissions")
       .select(
-        "*, submission_estimates(status, ai_confidence, range_low, range_high)"
+        "*, submission_estimates(status, ai_confidence, range_low, range_high, customer_accepted_at, deposit_low, deposit_high, deposit_collected)"
       )
       .order("created_at", { ascending: false })
       .limit(100)
@@ -82,6 +86,7 @@ export default function AdminListPage() {
                   <th>AI conf.</th>
                   <th>Draft range</th>
                   <th>Status</th>
+                  <th>Deposit</th>
                   <th></th>
                 </tr>
               </thead>
@@ -114,6 +119,21 @@ export default function AdminListPage() {
                       </td>
                       <td>
                         <StatusBadge status={r.status} />
+                      </td>
+                      <td>
+                        {est?.customer_accepted_at ? (
+                          est.deposit_collected ? (
+                            <span className="admin-deposit-flag admin-deposit-flag--done">
+                              ✓ Collected
+                            </span>
+                          ) : (
+                            <span className="admin-deposit-flag admin-deposit-flag--due">
+                              {money(est.deposit_low)}–{money(est.deposit_high)} due
+                            </span>
+                          )
+                        ) : (
+                          "—"
+                        )}
                       </td>
                       <td>
                         <Link href={`/admin/${r.id}`} className="card__link">
