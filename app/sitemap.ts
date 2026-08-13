@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { cityPages } from "@/lib/cities";
 import { site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -11,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/estimate",
     "/privacy",
     "/terms",
+    ...cityPages.map((c) => `/basement-waterproofing-${c.slug}`),
   ];
   return routes.map((route) => ({
     url: `${site.url}${route}`,

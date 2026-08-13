@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cityPages } from "@/lib/cities";
 import { navLinks, services, site } from "@/lib/site";
 import { DropIcon } from "@/components/Icons";
 
@@ -30,6 +31,17 @@ export function Footer() {
               {services.map((s) => (
                 <li key={s.slug}>
                   <Link href={`/services#${s.slug}`}>{s.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="footer__col">
+            <h4>Areas We Serve</h4>
+            <ul>
+              {cityPages.map((c) => (
+                <li key={c.slug}>
+                  <Link href={`/basement-waterproofing-${c.slug}`}>{c.name}</Link>
                 </li>
               ))}
             </ul>

@@ -1716,7 +1716,7 @@ h3 {
 
 .footer__top {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
+  grid-template-columns: 1.2fr 0.9fr 0.9fr 0.9fr;
   gap: 40px;
   padding-bottom: 40px;
   border-bottom: 1px solid var(--border);
