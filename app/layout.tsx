@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { GoogleTag } from "@/components/GoogleTag";
 import { faqs, site } from "@/lib/site";
 
 const inter = Inter({
@@ -138,6 +139,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable}>
+        <GoogleTag />
         <StructuredData />
         <Navbar />
         <main>{children}</main>

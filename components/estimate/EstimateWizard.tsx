@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { CheckIcon, PhoneIcon } from "@/components/Icons";
 import { site } from "@/lib/site";
+import { trackLeadSubmitted, trackQuoteAccepted } from "@/lib/analytics";
 
 type Status = "editing" | "submitting" | "analyzing" | "done" | "error";
 
@@ -122,6 +123,7 @@ export function EstimateWizard() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Something went wrong.");
       setSubmissionId(json.submissionId ?? null);
+      if (json.submissionId) trackLeadSubmitted();
 
       // Upload photos if we have a stored submission to attach them to.
       if (json.submissionId && photoCount > 0) {
@@ -177,6 +179,7 @@ export function EstimateWizard() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Something went wrong.");
       setAccepted(true);
+      trackQuoteAccepted(instant?.depositLow ?? 0);
       // Drop PAN/CVV from client memory after a successful accept.
       setCard({
         nameOnCard: "",
