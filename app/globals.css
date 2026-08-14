@@ -1743,6 +1743,11 @@ h3 {
   gap: 10px;
 }
 
+.footer__col-list--2up {
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+}
+
 .footer__col a,
 .footer__col li {
   color: var(--text-muted);

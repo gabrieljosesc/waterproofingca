@@ -38,7 +38,7 @@ export function Footer() {
 
           <div className="footer__col">
             <h4>Areas We Serve</h4>
-            <ul>
+            <ul className="footer__col-list--2up">
               {cityPages.map((c) => (
                 <li key={c.slug}>
                   <Link href={`/basement-waterproofing-${c.slug}`}>{c.name}</Link>
