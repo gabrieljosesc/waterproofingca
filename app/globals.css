@@ -231,12 +231,27 @@ h3 {
   }
 }
 
+.topbar__contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .topbar__phone {
   font-weight: 700;
   color: var(--accent);
 }
 
 .topbar__phone:hover {
+  color: var(--white);
+}
+
+.topbar__whatsapp {
+  display: inline-flex;
+  color: #4ade80;
+}
+
+.topbar__whatsapp:hover {
   color: var(--white);
 }
 

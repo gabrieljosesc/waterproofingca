@@ -15,6 +15,10 @@ export const site = {
   // --- CONTACT DETAILS (real business details, provided by client) ---
   phone: "(647) 762-0775",
   phoneHref: "tel:+16477620775",
+  // WhatsApp on the same business number, with a pre-filled opening message.
+  whatsappHref: `https://wa.me/16477620775?text=${encodeURIComponent(
+    "Hi, I'd like a quote for basement waterproofing."
+  )}`,
   email: "info@dryfortwaterproofing.ca",
   emailHref: "mailto:info@dryfortwaterproofing.ca",
   address: "885 Don Mills Ave, Suite 100, Toronto, ON",

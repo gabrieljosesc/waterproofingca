@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { navLinks, site } from "@/lib/site";
-import { DropIcon } from "@/components/Icons";
+import { DropIcon, WhatsAppIcon } from "@/components/Icons";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -21,9 +21,20 @@ export function Navbar() {
           <span className="topbar__hide-mobile">
             Serving all of Southern Ontario
           </span>
-          <a href={site.phoneHref} className="topbar__phone">
-            {site.phone}
-          </a>
+          <span className="topbar__contact">
+            <a href={site.phoneHref} className="topbar__phone">
+              {site.phone}
+            </a>
+            <a
+              href={site.whatsappHref}
+              className="topbar__whatsapp"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Chat on WhatsApp"
+            >
+              <WhatsAppIcon size={16} />
+            </a>
+          </span>
         </div>
       </div>
 

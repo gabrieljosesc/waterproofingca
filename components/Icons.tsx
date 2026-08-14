@@ -36,6 +36,25 @@ export function PhoneIcon({ size = 22 }: IconProps) {
   );
 }
 
+export function WhatsAppIcon({ size = 22 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21 11.5a8.5 8.5 0 0 1-12.36 7.56L3 21l2.05-5.44A8.5 8.5 0 1 1 21 11.5z" />
+      <path d="M8.5 10.5c.3 2.5 2.5 4.7 5 5" />
+    </svg>
+  );
+}
+
 export function MailIcon({ size = 22 }: IconProps) {
   return (
     <svg

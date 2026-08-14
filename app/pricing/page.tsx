@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { images, site } from "@/lib/site";
 import { CtaBand } from "@/components/CtaBand";
-import { CardIcon, CheckIcon } from "@/components/Icons";
+import { CardIcon, CheckIcon, WhatsAppIcon } from "@/components/Icons";
 
 export const metadata: Metadata = {
   title: "Pricing — Instant Quote Available",
@@ -292,6 +292,14 @@ export default function PricingPage() {
             </Link>
             <a href={site.phoneHref} className="btn btn--primary">
               Call {site.phone}
+            </a>
+            <a
+              href={site.whatsappHref}
+              className="btn btn--ghost"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <WhatsAppIcon size={18} /> WhatsApp
             </a>
           </div>
         </div>

@@ -62,6 +62,11 @@ export function Footer() {
                 <a href={site.phoneHref}>{site.phone} (24/7)</a>
               </li>
               <li>
+                <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer">
+                  WhatsApp
+                </a>
+              </li>
+              <li>
                 <a href={site.emailHref}>{site.email}</a>
               </li>
               <li>{site.address}</li>

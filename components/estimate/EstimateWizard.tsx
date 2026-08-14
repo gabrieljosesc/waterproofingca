@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CheckIcon, PhoneIcon } from "@/components/Icons";
+import { CheckIcon, PhoneIcon, WhatsAppIcon } from "@/components/Icons";
 import { site } from "@/lib/site";
 import { trackLeadSubmitted, trackQuoteAccepted } from "@/lib/analytics";
 
@@ -393,6 +393,14 @@ export function EstimateWizard() {
               <a href={site.phoneHref} className="btn btn--ghost">
                 <PhoneIcon size={18} /> Call {site.phone}
               </a>
+              <a
+                href={site.whatsappHref}
+                className="btn btn--ghost"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <WhatsAppIcon size={18} /> WhatsApp
+              </a>
             </div>
           </div>
         )}
@@ -422,9 +430,19 @@ export function EstimateWizard() {
           <strong>free site visit</strong> and give you an exact price there.
           If water is actively coming in, call our 24/7 line now.
         </p>
-        <a href={site.phoneHref} className="btn btn--primary" style={{ marginTop: 14 }}>
-          <PhoneIcon size={18} /> Call {site.phone}
-        </a>
+        <div className="cta-band__actions" style={{ justifyContent: "flex-start", marginTop: 14 }}>
+          <a href={site.phoneHref} className="btn btn--primary">
+            <PhoneIcon size={18} /> Call {site.phone}
+          </a>
+          <a
+            href={site.whatsappHref}
+            className="btn btn--ghost"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <WhatsAppIcon size={18} /> WhatsApp
+          </a>
+        </div>
       </div>
     );
   }

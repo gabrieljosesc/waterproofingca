@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { images, site } from "@/lib/site";
 import { EstimateWizard } from "@/components/estimate/EstimateWizard";
-import { CheckIcon } from "@/components/Icons";
+import { CheckIcon, WhatsAppIcon } from "@/components/Icons";
 
 export const metadata: Metadata = {
   title: "Get an Instant AI Photo Estimate",
@@ -68,9 +68,19 @@ export default function EstimatePage() {
                 is always confirmed at a free on-site visit with our team. For
                 active flooding, calling is faster:
               </p>
-              <a href={site.phoneHref} className="btn btn--ghost">
-                {site.phone}
-              </a>
+              <div className="cta-band__actions" style={{ justifyContent: "flex-start" }}>
+                <a href={site.phoneHref} className="btn btn--ghost">
+                  {site.phone}
+                </a>
+                <a
+                  href={site.whatsappHref}
+                  className="btn btn--ghost"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <WhatsAppIcon size={18} /> WhatsApp
+                </a>
+              </div>
             </div>
 
             <EstimateWizard />

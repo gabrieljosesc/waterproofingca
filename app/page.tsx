@@ -13,6 +13,7 @@ import {
   PhoneIcon,
   PumpIcon,
   ShieldDropIcon,
+  WhatsAppIcon,
   ShieldIcon,
 } from "@/components/Icons";
 
@@ -83,6 +84,14 @@ export default function HomePage() {
             </Link>
             <a href={site.phoneHref} className="btn btn--ghost">
               <PhoneIcon size={18} /> Emergency: {site.phone}
+            </a>
+            <a
+              href={site.whatsappHref}
+              className="btn btn--ghost"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <WhatsAppIcon size={18} /> WhatsApp
             </a>
           </div>
           <div className="hero__stats">

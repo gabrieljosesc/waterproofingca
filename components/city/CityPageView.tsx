@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { CityPage } from "@/lib/cities";
 import { images, services, site } from "@/lib/site";
 import { CtaBand } from "@/components/CtaBand";
-import { CheckIcon, PhoneIcon } from "@/components/Icons";
+import { CheckIcon, PhoneIcon, WhatsAppIcon } from "@/components/Icons";
 
 export function cityMetadata(page: CityPage): Metadata {
   return {
@@ -98,6 +98,14 @@ export function CityPageView({ page }: { page: CityPage }) {
             </Link>
             <a href={site.phoneHref} className="btn btn--ghost">
               <PhoneIcon size={18} /> Emergency: {site.phone}
+            </a>
+            <a
+              href={site.whatsappHref}
+              className="btn btn--ghost"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <WhatsAppIcon size={18} /> WhatsApp
             </a>
           </div>
         </div>
