@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
-import { PhoneIcon, WhatsAppIcon } from "@/components/Icons";
+import { PhoneIcon } from "@/components/Icons";
 
 type CtaBandProps = {
   heading?: string;
@@ -26,14 +26,6 @@ export function CtaBand({
             </Link>
             <a href={site.phoneHref} className="btn btn--ghost">
               <PhoneIcon size={18} /> {site.phone}
-            </a>
-            <a
-              href={site.whatsappHref}
-              className="btn btn--ghost"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <WhatsAppIcon size={18} /> WhatsApp
             </a>
           </div>
         </div>

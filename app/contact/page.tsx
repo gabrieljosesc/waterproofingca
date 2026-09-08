@@ -9,7 +9,6 @@ import {
   MailIcon,
   MapPinIcon,
   PhoneIcon,
-  WhatsAppIcon,
 } from "@/components/Icons";
 
 export const metadata: Metadata = {
@@ -31,13 +30,6 @@ const details = [
     label: "Quotes & General",
     value: site.phone,
     href: site.phoneHref,
-  },
-  {
-    icon: <WhatsAppIcon />,
-    label: "WhatsApp",
-    value: "Message us instantly",
-    href: site.whatsappHref,
-    external: true,
   },
   {
     icon: <MailIcon />,
@@ -112,18 +104,7 @@ export default function ContactPage() {
                   <div>
                     <div className="contact-card__label">{d.label}</div>
                     <div className="contact-card__value">
-                      {d.href ? (
-                        <a
-                          href={d.href}
-                          {...(d.external
-                            ? { target: "_blank", rel: "noopener noreferrer" }
-                            : {})}
-                        >
-                          {d.value}
-                        </a>
-                      ) : (
-                        d.value
-                      )}
+                      {d.href ? <a href={d.href}>{d.value}</a> : d.value}
                     </div>
                   </div>
                 </div>
