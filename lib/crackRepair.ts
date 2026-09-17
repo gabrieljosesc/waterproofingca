@@ -4,16 +4,31 @@
  */
 
 /**
- * YouTube video ID of the crack-repair explainer.
- *
- * Leave as "" until the video is uploaded — the pages then show the written
- * steps only. Once it's on YouTube, paste the ID here: for
- * youtube.com/watch?v=abc123XYZ the ID is "abc123XYZ".
+ * Self-hosted MP4 (served from /public). Set to "" to fall back to YouTube.
+ * 720p H.264, ~1:33, re-encoded for web from the client's original.
+ */
+export const CRACK_REPAIR_VIDEO_SRC: string = "/videos/crack-repair-process.mp4";
+export const CRACK_REPAIR_VIDEO_POSTER: string =
+  "/videos/crack-repair-process-poster.jpg";
+
+/**
+ * YouTube video ID of the crack-repair explainer — used only when
+ * CRACK_REPAIR_VIDEO_SRC is "". For youtube.com/watch?v=abc123XYZ the ID is
+ * "abc123XYZ".
  */
 export const CRACK_REPAIR_VIDEO_ID: string = "";
 
 export const CRACK_REPAIR_VIDEO_TITLE =
   "How We Repair a Leaking Foundation Crack";
+export const CRACK_REPAIR_VIDEO_DESCRIPTION =
+  "DryFort Waterproofing's 7-step interior foundation crack repair: locate and mark the crack, cut a repair channel, chisel to sound concrete, clean and prep, apply crystalline waterproofing, pack with waterproof repair mortar, and finish flush with the wall.";
+/** ISO 8601 duration, for VideoObject structured data. */
+export const CRACK_REPAIR_VIDEO_DURATION = "PT1M33S";
+export const CRACK_REPAIR_VIDEO_UPLOAD_DATE = "2026-09-18";
+
+export const hasCrackRepairVideo = Boolean(
+  CRACK_REPAIR_VIDEO_SRC || CRACK_REPAIR_VIDEO_ID
+);
 
 export type RepairStep = { title: string; text: string };
 

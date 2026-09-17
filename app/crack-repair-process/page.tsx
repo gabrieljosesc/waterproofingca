@@ -3,9 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { images, site } from "@/lib/site";
 import {
+  CRACK_REPAIR_VIDEO_DESCRIPTION,
+  CRACK_REPAIR_VIDEO_DURATION,
   CRACK_REPAIR_VIDEO_ID,
+  CRACK_REPAIR_VIDEO_POSTER,
+  CRACK_REPAIR_VIDEO_SRC,
   CRACK_REPAIR_VIDEO_TITLE,
+  CRACK_REPAIR_VIDEO_UPLOAD_DATE,
   crackRepairSteps,
+  hasCrackRepairVideo,
 } from "@/lib/crackRepair";
 import { CtaBand } from "@/components/CtaBand";
 import { VideoEmbed } from "@/components/VideoEmbed";
@@ -16,7 +22,37 @@ export const metadata: Metadata = {
   description:
     "Watch how DryFort repairs a leaking foundation crack from the inside: cut a repair channel, chisel to sound concrete, crystalline waterproofing, then rebuild flush. Serving Southern Ontario 24/7.",
   alternates: { canonical: "/crack-repair-process" },
+  openGraph: {
+    title: CRACK_REPAIR_VIDEO_TITLE,
+    description: CRACK_REPAIR_VIDEO_DESCRIPTION,
+    url: `${site.url}/crack-repair-process`,
+    type: "video.other",
+    images: [{ url: `${site.url}${CRACK_REPAIR_VIDEO_POSTER}`, width: 1280, height: 720 }],
+    videos: CRACK_REPAIR_VIDEO_SRC
+      ? [{ url: `${site.url}${CRACK_REPAIR_VIDEO_SRC}`, width: 1280, height: 720, type: "video/mp4" }]
+      : undefined,
+  },
 };
+
+const videoJsonLd = hasCrackRepairVideo
+  ? {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      name: CRACK_REPAIR_VIDEO_TITLE,
+      description: CRACK_REPAIR_VIDEO_DESCRIPTION,
+      thumbnailUrl: [`${site.url}${CRACK_REPAIR_VIDEO_POSTER}`],
+      uploadDate: CRACK_REPAIR_VIDEO_UPLOAD_DATE,
+      duration: CRACK_REPAIR_VIDEO_DURATION,
+      ...(CRACK_REPAIR_VIDEO_SRC
+        ? { contentUrl: `${site.url}${CRACK_REPAIR_VIDEO_SRC}` }
+        : { embedUrl: `https://www.youtube.com/embed/${CRACK_REPAIR_VIDEO_ID}` }),
+      publisher: {
+        "@type": "Organization",
+        name: site.name,
+        url: site.url,
+      },
+    }
+  : null;
 
 const outcomes = [
   "Repair material bonded to solid, sound concrete — not a weak surface",
@@ -25,10 +61,16 @@ const outcomes = [
 ];
 
 export default function CrackRepairProcessPage() {
-  const hasVideo = Boolean(CRACK_REPAIR_VIDEO_ID);
+  const hasVideo = hasCrackRepairVideo;
 
   return (
     <>
+      {videoJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }}
+        />
+      )}
       <section className="page-hero">
         <div className="page-hero__bg">
           <Image
@@ -61,6 +103,8 @@ export default function CrackRepairProcessPage() {
           {hasVideo && (
             <div style={{ maxWidth: 960, margin: "0 auto 56px" }}>
               <VideoEmbed
+                src={CRACK_REPAIR_VIDEO_SRC}
+                poster={CRACK_REPAIR_VIDEO_POSTER}
                 youtubeId={CRACK_REPAIR_VIDEO_ID}
                 title={CRACK_REPAIR_VIDEO_TITLE}
               />

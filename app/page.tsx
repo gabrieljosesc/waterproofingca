@@ -3,7 +3,10 @@ import Link from "next/link";
 import { faqs, images, services, site, testimonials } from "@/lib/site";
 import {
   CRACK_REPAIR_VIDEO_ID,
+  CRACK_REPAIR_VIDEO_POSTER,
+  CRACK_REPAIR_VIDEO_SRC,
   CRACK_REPAIR_VIDEO_TITLE,
+  hasCrackRepairVideo,
 } from "@/lib/crackRepair";
 import { CtaBand } from "@/components/CtaBand";
 import { VideoEmbed } from "@/components/VideoEmbed";
@@ -155,8 +158,10 @@ export default function HomePage() {
       <section className="section">
         <div className="container">
           <div className="split">
-            {CRACK_REPAIR_VIDEO_ID ? (
+            {hasCrackRepairVideo ? (
               <VideoEmbed
+                src={CRACK_REPAIR_VIDEO_SRC}
+                poster={CRACK_REPAIR_VIDEO_POSTER}
                 youtubeId={CRACK_REPAIR_VIDEO_ID}
                 title={CRACK_REPAIR_VIDEO_TITLE}
               />
@@ -180,13 +185,13 @@ export default function HomePage() {
                 No patch over the top. We open the crack up, waterproof the
                 concrete inside it, and rebuild the wall flush — in seven
                 steps.{" "}
-                {CRACK_REPAIR_VIDEO_ID
-                  ? "Watch the two-minute walkthrough, then read each step."
+                {hasCrackRepairVideo
+                  ? "Watch the 90-second walkthrough, then read each step."
                   : "Here's every step, in order."}
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
                 <Link href="/crack-repair-process" className="btn btn--primary">
-                  {CRACK_REPAIR_VIDEO_ID ? "Watch the Full Walkthrough" : "See All 7 Steps"}
+                  {hasCrackRepairVideo ? "Watch the Full Walkthrough" : "See All 7 Steps"}
                 </Link>
                 <Link href="/estimate" className="btn btn--ghost">
                   Get an Instant Estimate
