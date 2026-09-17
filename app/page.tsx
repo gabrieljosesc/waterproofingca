@@ -1,7 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { faqs, images, services, site, testimonials } from "@/lib/site";
+import {
+  CRACK_REPAIR_VIDEO_ID,
+  CRACK_REPAIR_VIDEO_TITLE,
+} from "@/lib/crackRepair";
 import { CtaBand } from "@/components/CtaBand";
+import { VideoEmbed } from "@/components/VideoEmbed";
 import {
   AlertIcon,
   CheckIcon,
@@ -140,6 +145,52 @@ export default function HomePage() {
               <div>
                 <strong>24/7 Live Answer</strong>
                 <span>Real person, every call</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Crack repair walkthrough video */}
+      <section className="section">
+        <div className="container">
+          <div className="split">
+            {CRACK_REPAIR_VIDEO_ID ? (
+              <VideoEmbed
+                youtubeId={CRACK_REPAIR_VIDEO_ID}
+                title={CRACK_REPAIR_VIDEO_TITLE}
+              />
+            ) : (
+              <Link href="/crack-repair-process" className="split__media">
+                <Image
+                  src={images.crackWall}
+                  alt="Vertical crack running through a concrete foundation wall"
+                  fill
+                  sizes="(max-width: 900px) 100vw, 600px"
+                  style={{ objectFit: "cover" }}
+                />
+              </Link>
+            )}
+            <div>
+              <span className="eyebrow">How We Work</span>
+              <h2 className="section-title">
+                See exactly how we repair a leaking foundation crack
+              </h2>
+              <p className="section-lead" style={{ marginBottom: 28 }}>
+                No patch over the top. We open the crack up, waterproof the
+                concrete inside it, and rebuild the wall flush — in seven
+                steps.{" "}
+                {CRACK_REPAIR_VIDEO_ID
+                  ? "Watch the two-minute walkthrough, then read each step."
+                  : "Here's every step, in order."}
+              </p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+                <Link href="/crack-repair-process" className="btn btn--primary">
+                  {CRACK_REPAIR_VIDEO_ID ? "Watch the Full Walkthrough" : "See All 7 Steps"}
+                </Link>
+                <Link href="/estimate" className="btn btn--ghost">
+                  Get an Instant Estimate
+                </Link>
               </div>
             </div>
           </div>

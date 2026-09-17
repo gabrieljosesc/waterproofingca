@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/about",
     "/contact",
     "/estimate",
+    "/crack-repair-process",
     "/privacy",
     "/terms",
     ...cityPages.map((c) => `/basement-waterproofing-${c.slug}`),
