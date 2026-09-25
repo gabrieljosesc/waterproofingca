@@ -1707,6 +1707,17 @@ h3 {
   }
 }
 
+/* ---- Confirmation pages (/thank-you, /estimate/thank-you, /estimate/accepted) ---- */
+.confirmation {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.confirmation__title {
+  font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+  margin: 6px 0 12px;
+}
+
 /* ---- Video embed ---- */
 .video-embed {
   position: relative;

@@ -1,30 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CheckIcon, PhoneIcon } from "@/components/Icons";
-import { site } from "@/lib/site";
-import { trackLeadSubmitted, trackQuoteAccepted } from "@/lib/analytics";
+import { markPendingConversion } from "@/lib/analytics";
 
-type Status = "editing" | "submitting" | "analyzing" | "done" | "error";
-
-/** Customer-safe instant estimate returned by /api/estimate/[id]/analyze. */
-interface InstantEstimate {
-  showPrice: boolean;
-  rangeLow: number;
-  rangeHigh: number;
-  rebate: number;
-  netLow: number;
-  netHigh: number;
-  rebateCity: string | null;
-  summary?: string;
-  confidence: number;
-  validDays: number;
-  depositPercent: number;
-  depositLow: number;
-  depositHigh: number;
-}
-
-const money = (n: number) => "$" + Math.round(n).toLocaleString("en-CA");
+type Status = "editing" | "submitting" | "analyzing" | "error";
 
 const PHOTO_GROUPS = [
   {
@@ -55,20 +34,6 @@ export function EstimateWizard() {
   const [step, setStep] = useState(0);
   const [status, setStatus] = useState<Status>("editing");
   const [error, setError] = useState<string | null>(null);
-  const [instant, setInstant] = useState<InstantEstimate | null>(null);
-  const [submissionId, setSubmissionId] = useState<string | null>(null);
-  const [accepting, setAccepting] = useState(false);
-  const [accepted, setAccepted] = useState(false);
-  const [acceptError, setAcceptError] = useState<string | null>(null);
-  const [card, setCard] = useState({
-    nameOnCard: "",
-    cardNumber: "",
-    expMonth: "",
-    expYear: "",
-    cvv: "",
-  });
-  const setCardField = (k: keyof typeof card, v: string) =>
-    setCard((c) => ({ ...c, [k]: v }));
 
   // form state
   const [form, setForm] = useState<Record<string, string>>({});
@@ -122,13 +87,12 @@ export function EstimateWizard() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Something went wrong.");
-      setSubmissionId(json.submissionId ?? null);
-      if (json.submissionId) trackLeadSubmitted();
+      const submissionId: string | null = json.submissionId ?? null;
 
       // Upload photos if we have a stored submission to attach them to.
-      if (json.submissionId && photoCount > 0) {
+      if (submissionId && photoCount > 0) {
         const fd = new FormData();
-        fd.set("submissionId", json.submissionId);
+        fd.set("submissionId", submissionId);
         for (const group of PHOTO_GROUPS) {
           for (const file of files[group.type] ?? []) {
             fd.append("photos", file);
@@ -137,63 +101,30 @@ export function EstimateWizard() {
         }
         await fetch("/api/estimate/photos", { method: "POST", body: fd });
 
-        // Instant AI estimate: analyze now and show the customer the range.
-        // Any failure falls back to the plain "we'll be in touch" message.
+        // Instant AI estimate: analyze now so the confirmation page can show
+        // the range. Any failure falls back to the plain "we'll be in touch"
+        // message there.
         setStatus("analyzing");
         try {
-          const aRes = await fetch(`/api/estimate/${json.submissionId}/analyze`, {
-            method: "POST",
-          });
-          const aJson = await aRes.json();
-          if (aRes.ok && aJson.analyzed && aJson.customer) {
-            setInstant(aJson.customer as InstantEstimate);
-          }
+          await fetch(`/api/estimate/${submissionId}/analyze`, { method: "POST" });
         } catch {
-          // fall through to the generic confirmation
+          // fall through — the confirmation page handles a missing estimate
         }
       }
 
-      setStatus("done");
+      // Hand off to the confirmation page (its own URL, so conversion tags can
+      // fire on page load). It fires the lead conversion once on arrival.
+      if (submissionId) {
+        markPendingConversion("lead", submissionId);
+        window.location.assign(
+          `/estimate/thank-you?id=${encodeURIComponent(submissionId)}`
+        );
+      } else {
+        window.location.assign("/estimate/thank-you");
+      }
     } catch (err) {
       setStatus("error");
       setError(err instanceof Error ? err.message : "Something went wrong.");
-    }
-  }
-
-  async function acceptQuote() {
-    if (!submissionId) return;
-    setAccepting(true);
-    setAcceptError(null);
-    try {
-      const res = await fetch(`/api/estimate/${submissionId}/accept`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nameOnCard: card.nameOnCard,
-          cardNumber: card.cardNumber,
-          expMonth: card.expMonth,
-          expYear: card.expYear,
-          cvv: card.cvv,
-        }),
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error ?? "Something went wrong.");
-      setAccepted(true);
-      trackQuoteAccepted(instant?.depositLow ?? 0);
-      // Drop PAN/CVV from client memory after a successful accept.
-      setCard({
-        nameOnCard: "",
-        cardNumber: "",
-        expMonth: "",
-        expYear: "",
-        cvv: "",
-      });
-    } catch (err) {
-      setAcceptError(
-        err instanceof Error ? err.message : "Something went wrong."
-      );
-    } finally {
-      setAccepting(false);
     }
   }
 
@@ -210,239 +141,6 @@ export function EstimateWizard() {
           It&apos;s reading your foundation wall, access route and site
           conditions to build your estimate. This usually takes about 15
           seconds — please keep this page open.
-        </p>
-      </div>
-    );
-  }
-
-  if (status === "done" && instant?.showPrice) {
-    return (
-      <div className="form wizard">
-        <div className="wizard__done-icon">
-          <CheckIcon size={28} />
-        </div>
-        <h3 style={{ fontSize: "1.4rem", marginBottom: 6 }}>
-          Your instant estimate
-        </h3>
-        <div className="instant-quote">
-          <div className="instant-quote__label">
-            Estimated range (before HST)
-          </div>
-          <div className="instant-quote__figure">
-            {money(instant.rangeLow)} – {money(instant.rangeHigh)}
-          </div>
-          {instant.rebate > 0 && (
-            <div className="instant-quote__rebate">
-              Est. municipal rebate on eligible items
-              {instant.rebateCity ? ` (${instant.rebateCity})` : ""}: −
-              {money(instant.rebate)}
-              <div className="instant-quote__net">
-                Est. net after rebate: {money(instant.netLow)} –{" "}
-                {money(instant.netHigh)}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {instant.summary && (
-          <div className="instant-quote__notes">
-            <strong>What our AI noticed in your photos:</strong>
-            <p>“{instant.summary}”</p>
-          </div>
-        )}
-
-        <ul className="instant-quote__terms">
-          <li>
-            This is a preliminary estimate based on your photos — not a final
-            price.
-          </li>
-          <li>
-            The final price is confirmed at your <strong>free on-site
-            visit</strong>; hidden conditions (soil, utilities, foundation
-            state) can change it.
-          </li>
-          <li>Estimate valid for {instant.validDays} days.</li>
-          {instant.rebate > 0 && (
-            <li>
-              Rebate figures are estimates only and subject to your
-              municipality&apos;s approval.
-            </li>
-          )}
-        </ul>
-
-        {accepted ? (
-          <div className="instant-quote__accepted">
-            <CheckIcon size={20} />
-            <div>
-              <strong>You&apos;re reserved!</strong>
-              <p>
-                Your {instant.depositPercent}% refundable deposit (
-                {money(instant.depositLow)} – {money(instant.depositHigh)}) is
-                ready to process and your priority slot is locked in. This is
-                still a preliminary estimate — final pricing is confirmed at
-                your free on-site visit. We&apos;ll be in touch within one
-                business day.
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="instant-quote__accept">
-            {acceptError && <div className="form__error">{acceptError}</div>}
-            <p style={{ color: "var(--text-muted)" }}>
-              Want to lock in your spot? Accepting reserves your project ahead
-              of other requests. Enter your card for a{" "}
-              {instant.depositPercent}% refundable deposit (
-              {money(instant.depositLow)} – {money(instant.depositHigh)}) to
-              hold your place in line. We process the deposit after a quick
-              review — it is refundable.
-            </p>
-            <div className="deposit-card-form">
-              <div className="field">
-                <label htmlFor="nameOnCard">Name on card</label>
-                <input
-                  id="nameOnCard"
-                  autoComplete="cc-name"
-                  value={card.nameOnCard}
-                  onChange={(e) => setCardField("nameOnCard", e.target.value)}
-                  placeholder="As shown on the card"
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="cardNumber">Card number</label>
-                <input
-                  id="cardNumber"
-                  inputMode="numeric"
-                  autoComplete="cc-number"
-                  value={card.cardNumber}
-                  onChange={(e) =>
-                    setCardField(
-                      "cardNumber",
-                      e.target.value.replace(/[^\d\s]/g, "").slice(0, 23)
-                    )
-                  }
-                  placeholder="•••• •••• •••• ••••"
-                />
-              </div>
-              <div className="form__row deposit-card-form__row">
-                <div className="field">
-                  <label htmlFor="expMonth">Exp. month</label>
-                  <input
-                    id="expMonth"
-                    inputMode="numeric"
-                    autoComplete="cc-exp-month"
-                    value={card.expMonth}
-                    onChange={(e) =>
-                      setCardField(
-                        "expMonth",
-                        e.target.value.replace(/\D/g, "").slice(0, 2)
-                      )
-                    }
-                    placeholder="MM"
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="expYear">Exp. year</label>
-                  <input
-                    id="expYear"
-                    inputMode="numeric"
-                    autoComplete="cc-exp-year"
-                    value={card.expYear}
-                    onChange={(e) =>
-                      setCardField(
-                        "expYear",
-                        e.target.value.replace(/\D/g, "").slice(0, 4)
-                      )
-                    }
-                    placeholder="YYYY"
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="cvv">CVV</label>
-                  <input
-                    id="cvv"
-                    inputMode="numeric"
-                    autoComplete="cc-csc"
-                    value={card.cvv}
-                    onChange={(e) =>
-                      setCardField(
-                        "cvv",
-                        e.target.value.replace(/\D/g, "").slice(0, 4)
-                      )
-                    }
-                    placeholder="•••"
-                  />
-                </div>
-              </div>
-              <p className="form__note">
-                Your full card number is not saved in our database. It is only
-                available to our team in the secure admin dashboard to process
-                your refundable deposit, then cleared.
-              </p>
-            </div>
-            <div className="cta-band__actions" style={{ justifyContent: "flex-start" }}>
-              <button
-                type="button"
-                className="btn btn--primary"
-                onClick={acceptQuote}
-                disabled={accepting}
-              >
-                {accepting
-                  ? "Reserving…"
-                  : "Accept Quote & Pay 20% Deposit"}
-              </button>
-              <a href={site.phoneHref} className="btn btn--ghost">
-                <PhoneIcon size={18} /> Call {site.phone}
-              </a>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  if (status === "done" && instant && !instant.showPrice) {
-    return (
-      <div className="form wizard">
-        <div className="wizard__done-icon">
-          <CheckIcon size={28} />
-        </div>
-        <h3 style={{ fontSize: "1.4rem", marginBottom: 10 }}>
-          Thanks — your property needs a closer look
-        </h3>
-        {instant.summary && (
-          <div className="instant-quote__notes">
-            <strong>What our AI noticed in your photos:</strong>
-            <p>“{instant.summary}”</p>
-          </div>
-        )}
-        <p style={{ color: "var(--text-muted)" }}>
-          Based on the photos, we can&apos;t put a reliable number on this one
-          without seeing it in person — some conditions (like excavation depth
-          or access) need eyes on site. Our team will contact you to book a{" "}
-          <strong>free site visit</strong> and give you an exact price there.
-          If water is actively coming in, call our 24/7 line now.
-        </p>
-        <a href={site.phoneHref} className="btn btn--primary" style={{ marginTop: 14 }}>
-          <PhoneIcon size={18} /> Call {site.phone}
-        </a>
-      </div>
-    );
-  }
-
-  if (status === "done") {
-    return (
-      <div className="form wizard">
-        <div className="wizard__done-icon">
-          <CheckIcon size={28} />
-        </div>
-        <h3 style={{ fontSize: "1.4rem", marginBottom: 10 }}>
-          Request received — thank you!
-        </h3>
-        <p style={{ color: "var(--text-muted)" }}>
-          Our team is reviewing your details now. You&apos;ll hear back within
-          one business day, or much sooner if it&apos;s urgent — adding photos
-          helps us give you an instant estimate next time. If water is actively
-          coming in, call our 24/7 line for immediate dispatch.
         </p>
       </div>
     );

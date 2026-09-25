@@ -24,6 +24,41 @@ function gtag(...args: unknown[]) {
   window.gtag(...args);
 }
 
+/**
+ * Conversions fire on the confirmation pages (/thank-you, /estimate/thank-you,
+ * /estimate/accepted) rather than in the form itself, so a full-page redirect
+ * can't drop the hit and so URL-based conversion tags work too. The form marks
+ * the conversion as pending right before it redirects; the confirmation page
+ * consumes the mark on load and fires exactly once — a refresh or a revisit
+ * of the same URL won't count it again.
+ */
+export type PendingConversion = "lead" | "accept";
+
+function pendingKey(kind: PendingConversion) {
+  return `df_pending_${kind}`;
+}
+
+export function markPendingConversion(kind: PendingConversion, id: string) {
+  try {
+    window.sessionStorage.setItem(pendingKey(kind), id);
+  } catch {
+    // storage unavailable (private mode etc.) — the conversion is simply not tracked
+  }
+}
+
+/** True (once) if the given conversion was marked pending for this id. */
+export function consumePendingConversion(kind: PendingConversion, id: string) {
+  try {
+    const key = pendingKey(kind);
+    const pending = window.sessionStorage.getItem(key);
+    if (pending !== id) return false;
+    window.sessionStorage.removeItem(key);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /** Fires when a customer submits the estimate wizard — a new lead. */
 export function trackLeadSubmitted() {
   gtag("event", "generate_lead", { currency: "CAD" });

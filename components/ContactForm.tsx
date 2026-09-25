@@ -28,7 +28,8 @@ export function ContactForm() {
         throw new Error(json.error ?? "Something went wrong.");
       }
       setStatus("sent");
-      form.reset();
+      // Confirmation lives on its own URL so a conversion tag can fire on it.
+      window.location.assign("/thank-you");
     } catch (err) {
       setStatus("error");
       setError(
@@ -37,29 +38,6 @@ export function ContactForm() {
           : "Something went wrong. Please try again or call us."
       );
     }
-  }
-
-  if (status === "sent") {
-    return (
-      <div className="form">
-        <h3 style={{ fontSize: "1.4rem", marginBottom: 10 }}>
-          Request received!
-        </h3>
-        <p style={{ color: "var(--text-muted)" }}>
-          Thanks for reaching out. Our team will review your request and get
-          back to you within one business day — or much sooner if it&apos;s an
-          emergency. If water is actively coming in, call our 24/7 line for
-          immediate dispatch.
-        </p>
-        <button
-          className="btn btn--ghost"
-          style={{ marginTop: 22 }}
-          onClick={() => setStatus("idle")}
-        >
-          Send another request
-        </button>
-      </div>
-    );
   }
 
   return (
@@ -137,9 +115,9 @@ export function ContactForm() {
         type="submit"
         className="btn btn--primary"
         style={{ width: "100%" }}
-        disabled={status === "sending"}
+        disabled={status === "sending" || status === "sent"}
       >
-        {status === "sending" ? "Sending…" : "Request Free Quote"}
+        {status === "sending" || status === "sent" ? "Sending…" : "Request Free Quote"}
       </button>
       <p className="form__note">
         Free, no-obligation quotes for residential &amp; commercial properties.
