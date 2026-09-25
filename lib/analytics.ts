@@ -5,6 +5,14 @@
 
 export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 export const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
+
+/**
+ * Google Tag Manager container, managed by the client's ads team. The
+ * container ID is public (it's in the page source of every site that uses
+ * GTM), so it's fixed here rather than behind an env var; set
+ * NEXT_PUBLIC_GTM_ID to override, or to "" to turn it off.
+ */
+export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-WDWLLDVW";
 const ADS_LEAD_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_LEAD_LABEL;
 const ADS_ACCEPT_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_ACCEPT_LABEL;
 

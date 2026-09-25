@@ -4,6 +4,10 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { GoogleTag } from "@/components/GoogleTag";
+import {
+  GoogleTagManagerNoScript,
+  GoogleTagManagerScript,
+} from "@/components/GoogleTagManager";
 import { faqs, site } from "@/lib/site";
 
 const inter = Inter({
@@ -139,6 +143,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable}>
+        <GoogleTagManagerNoScript />
+        <GoogleTagManagerScript />
         <GoogleTag />
         <StructuredData />
         <Navbar />
