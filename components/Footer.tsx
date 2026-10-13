@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cityPages } from "@/lib/cities";
 import { navLinks, services, site } from "@/lib/site";
-import { DropIcon } from "@/components/Icons";
+import { DropIcon, FacebookIcon } from "@/components/Icons";
 
 export function Footer() {
   return (
@@ -23,6 +23,15 @@ export function Footer() {
               company. Exterior &amp; interior waterproofing, sump pumps, crack
               repair and flood response — residential and commercial.
             </p>
+            <a
+              href={site.facebookUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer__social"
+              aria-label="DryFort Waterproofing on Facebook (opens in a new tab)"
+            >
+              <FacebookIcon size={20} /> Follow us on Facebook
+            </a>
           </div>
 
           <div className="footer__col">
@@ -65,6 +74,11 @@ export function Footer() {
                 <a href={site.emailHref}>{site.email}</a>
               </li>
               <li>{site.address}</li>
+              <li>
+                <a href={site.facebookUrl} target="_blank" rel="noopener noreferrer">
+                  Facebook
+                </a>
+              </li>
             </ul>
           </div>
         </div>

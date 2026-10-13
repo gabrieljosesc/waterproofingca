@@ -59,6 +59,7 @@ function StructuredData() {
     url: site.url,
     telephone: site.phone,
     email: site.email,
+    sameAs: [site.facebookUrl],
     priceRange: "from $275 per linear foot",
     address: {
       "@type": "PostalAddress",

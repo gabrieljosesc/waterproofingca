@@ -1805,6 +1805,20 @@ h3 {
   font-size: 0.95rem;
 }
 
+.footer__social {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.footer__social:hover {
+  color: var(--accent);
+}
+
 .footer__col h4 {
   font-size: 0.8rem;
   text-transform: uppercase;

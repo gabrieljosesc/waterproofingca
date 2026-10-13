@@ -6,6 +6,7 @@ import { ContactForm } from "@/components/ContactForm";
 import {
   AlertIcon,
   ClockIcon,
+  FacebookIcon,
   MailIcon,
   MapPinIcon,
   PhoneIcon,
@@ -46,6 +47,13 @@ const details = [
     icon: <ClockIcon />,
     label: "Hours",
     value: site.hours,
+  },
+  {
+    icon: <FacebookIcon />,
+    label: "Facebook",
+    value: "DryFort Waterproofing on Facebook",
+    href: site.facebookUrl,
+    external: true,
   },
 ];
 
@@ -104,7 +112,18 @@ export default function ContactPage() {
                   <div>
                     <div className="contact-card__label">{d.label}</div>
                     <div className="contact-card__value">
-                      {d.href ? <a href={d.href}>{d.value}</a> : d.value}
+                      {d.href ? (
+                        <a
+                          href={d.href}
+                          {...(d.external
+                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            : {})}
+                        >
+                          {d.value}
+                        </a>
+                      ) : (
+                        d.value
+                      )}
                     </div>
                   </div>
                 </div>

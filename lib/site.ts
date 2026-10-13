@@ -19,6 +19,7 @@ export const site = {
   emailHref: "mailto:info@dryfortwaterproofing.ca",
   address: "885 Don Mills Ave, Suite 100, Toronto, ON",
   hours: "Office: Mon–Fri 8:00 AM – 6:00 PM · Emergency crews: 24/7",
+  facebookUrl: "https://www.facebook.com/profile.php?id=61595236076314",
 
   pricing: {
     exteriorFrom: 275,
