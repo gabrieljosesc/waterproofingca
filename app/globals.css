@@ -321,6 +321,63 @@ h3 {
   color: var(--accent);
 }
 
+/* Services dropdown */
+.nav__item {
+  position: relative;
+}
+
+.nav__link--menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav__menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 280px;
+  padding: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  z-index: 60;
+}
+
+.nav__item:hover .nav__menu,
+.nav__item:focus-within .nav__menu {
+  display: grid;
+  gap: 2px;
+}
+
+.nav__menu-link {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.nav__menu-link:hover,
+.nav__menu-link:focus-visible {
+  color: var(--text);
+  background: var(--surface);
+}
+
+.nav__menu-link--active {
+  color: var(--accent);
+}
+
+.nav__menu-link--all {
+  margin-top: 4px;
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 7px 7px;
+  color: var(--accent);
+}
+
 .header__cta {
   margin-left: 10px;
 }
@@ -1707,6 +1764,56 @@ h3 {
   }
 }
 
+/* ---- Service detail pages ---- */
+.service-figure figcaption,
+.photo-grid__item figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 28px 16px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #f2f7fb;
+  background: linear-gradient(to top, rgba(6, 12, 24, 0.85), rgba(6, 12, 24, 0));
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.photo-grid__item {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.card--link {
+  display: block;
+  color: inherit;
+}
+
+.card--link .card__link {
+  margin-top: 14px;
+}
+
+@media (max-width: 1000px) {
+  .photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .photo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ---- Confirmation pages (/thank-you, /estimate/thank-you, /estimate/accepted) ---- */
 .confirmation {
   max-width: 760px;
@@ -1927,6 +2034,22 @@ h3 {
 
   .nav--open .nav__link {
     padding: 12px 14px;
+  }
+
+  /* On mobile the services list is always shown, indented under Services */
+  .nav--open .nav__menu {
+    display: grid;
+    position: static;
+    min-width: 0;
+    padding: 0 0 6px 18px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .nav--open .nav__menu-link--all {
+    border-top: 0;
+    margin-top: 0;
   }
 
   .grid--2,

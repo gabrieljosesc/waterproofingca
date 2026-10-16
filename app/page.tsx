@@ -219,7 +219,7 @@ export default function HomePage() {
                 <div className="card__icon">{serviceIcons[service.slug]}</div>
                 <h3>{service.title}</h3>
                 <p>{service.short}</p>
-                <Link href={`/services#${service.slug}`} className="card__link">
+                <Link href={`/services/${service.slug}`} className="card__link">
                   Learn more →
                 </Link>
               </div>

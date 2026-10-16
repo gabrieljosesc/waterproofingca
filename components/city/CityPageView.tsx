@@ -141,7 +141,7 @@ export function CityPageView({ page }: { page: CityPage }) {
               return (
                 <Link
                   key={sl.slug}
-                  href={`/services#${sl.slug}`}
+                  href={`/services/${sl.slug}`}
                   className="card"
                   style={{ display: "block", textDecoration: "none", color: "inherit" }}
                 >

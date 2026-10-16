@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { cityPages } from "@/lib/cities";
-import { site } from "@/lib/site";
+import { services, site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/contact",
     "/estimate",
     "/crack-repair-process",
+    ...services.map((s) => `/services/${s.slug}`),
     "/privacy",
     "/terms",
     ...cityPages.map((c) => `/basement-waterproofing-${c.slug}`),

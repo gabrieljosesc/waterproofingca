@@ -3,12 +3,31 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { navLinks, site } from "@/lib/site";
+import { navLinks, services, site } from "@/lib/site";
 import { DropIcon } from "@/components/Icons";
+
+function Chevron() {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
 
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const close = () => setOpen(false);
 
   return (
     <>
@@ -29,7 +48,7 @@ export function Navbar() {
 
       <header className="header">
         <div className="container header__inner">
-          <Link href="/" className="brand" onClick={() => setOpen(false)}>
+          <Link href="/" className="brand" onClick={close}>
             <span className="brand__mark">
               <DropIcon size={22} />
             </span>
@@ -45,14 +64,56 @@ export function Navbar() {
                 link.href === "/"
                   ? pathname === "/"
                   : pathname.startsWith(link.href);
+              const linkClass = active
+                ? "nav__link nav__link--active"
+                : "nav__link";
+
+              if (link.href === "/services") {
+                return (
+                  <div key={link.href} className="nav__item">
+                    <Link
+                      href={link.href}
+                      className={`${linkClass} nav__link--menu`}
+                      onClick={close}
+                      aria-haspopup="true"
+                    >
+                      {link.label} <Chevron />
+                    </Link>
+                    <div className="nav__menu" role="menu">
+                      {services.map((s) => (
+                        <Link
+                          key={s.slug}
+                          href={`/services/${s.slug}`}
+                          className={
+                            pathname === `/services/${s.slug}`
+                              ? "nav__menu-link nav__menu-link--active"
+                              : "nav__menu-link"
+                          }
+                          role="menuitem"
+                          onClick={close}
+                        >
+                          {s.title}
+                        </Link>
+                      ))}
+                      <Link
+                        href="/services"
+                        className="nav__menu-link nav__menu-link--all"
+                        role="menuitem"
+                        onClick={close}
+                      >
+                        All services →
+                      </Link>
+                    </div>
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={
-                    active ? "nav__link nav__link--active" : "nav__link"
-                  }
-                  onClick={() => setOpen(false)}
+                  className={linkClass}
+                  onClick={close}
                 >
                   {link.label}
                 </Link>

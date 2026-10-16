@@ -95,13 +95,14 @@ export default function ServicesPage() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href="/contact"
-                  className="btn btn--primary"
-                  style={{ marginTop: 26 }}
-                >
-                  Request a Free Quote
-                </Link>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 26 }}>
+                  <Link href={`/services/${service.slug}`} className="btn btn--primary">
+                    Learn More
+                  </Link>
+                  <Link href="/contact" className="btn btn--ghost">
+                    Request a Free Quote
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
