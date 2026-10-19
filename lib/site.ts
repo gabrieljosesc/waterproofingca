@@ -21,6 +21,20 @@ export const site = {
   hours: "Office: Mon–Fri 8:00 AM – 6:00 PM · Emergency crews: 24/7",
   facebookUrl: "https://www.facebook.com/profile.php?id=61595236076314",
 
+  // --- SEASONAL PROMO (Halloween free estimate) ---
+  // The banner + callout hide automatically after `endsOn` (local date,
+  // inclusive). Set enabled: false to hide early. After Nov 30, swap this
+  // block for the next promo (new title/text/emoji/endsOn).
+  promo: {
+    enabled: true,
+    emoji: "🎃",
+    title: "Halloween Special",
+    text: "Book before Nov 30 and your on-site estimate is FREE — no tricks.",
+    cta: "Claim Free Estimate",
+    href: "/estimate?promo=halloween",
+    endsOn: "2026-11-30", // inclusive; promo stops showing after this date
+  },
+
   pricing: {
     exteriorFrom: 275,
     exteriorMinJob: 4000,
@@ -55,6 +69,14 @@ export const site = {
     "London",
   ],
 } as const;
+
+/** True while the seasonal promo is enabled and today is on/before endsOn. */
+export function isPromoActive(now: Date = new Date()): boolean {
+  if (!site.promo.enabled) return false;
+  const end = new Date(`${site.promo.endsOn}T23:59:59`);
+  if (Number.isNaN(end.getTime())) return true; // bad date → don't hide
+  return now.getTime() <= end.getTime();
+}
 
 export const navLinks = [
   { label: "Home", href: "/" },

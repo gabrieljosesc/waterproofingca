@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { images, site } from "@/lib/site";
 import { ContactForm } from "@/components/ContactForm";
+import { PromoCallout } from "@/components/PromoCallout";
 import {
   AlertIcon,
   ClockIcon,
@@ -94,10 +95,13 @@ export default function ContactPage() {
               <h2 className="section-title" style={{ fontSize: "1.8rem" }}>
                 We answer — day or night
               </h2>
-              <p className="section-lead" style={{ marginBottom: 28 }}>
+              <p className="section-lead">
                 Serving all of Southern Ontario, for residential and commercial
                 properties. Quotes are free, written and itemized.
               </p>
+              <div style={{ marginBottom: 28 }}>
+                <PromoCallout />
+              </div>
 
               {details.map((d) => (
                 <div

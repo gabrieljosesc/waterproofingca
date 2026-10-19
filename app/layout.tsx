@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { HalloweenBanner } from "@/components/HalloweenBanner";
 import { GoogleTag } from "@/components/GoogleTag";
 import {
   GoogleTagManagerNoScript,
@@ -148,6 +149,7 @@ export default function RootLayout({
         <GoogleTagManagerScript />
         <GoogleTag />
         <StructuredData />
+        <HalloweenBanner />
         <Navbar />
         <main>{children}</main>
         <Footer />

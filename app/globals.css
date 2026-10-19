@@ -183,6 +183,85 @@ h3 {
   color: var(--white);
 }
 
+/* ---- Promo bar (seasonal — see site.promo) ---- */
+.promo-bar {
+  position: relative;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 9px 44px 9px 16px;
+  background: linear-gradient(90deg, #2a1206 0%, #7a2e00 45%, #f97316 100%);
+  border-bottom: 1px solid #a3490f;
+  text-align: center;
+}
+
+.promo-bar__content {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.92rem;
+}
+
+.promo-bar__emoji {
+  font-size: 1.15rem;
+}
+
+.promo-bar__text strong {
+  font-weight: 800;
+}
+
+.promo-bar__cta {
+  font-weight: 800;
+  color: #ffd9a8;
+  white-space: nowrap;
+}
+
+.promo-bar__content:hover .promo-bar__cta {
+  text-decoration: underline;
+}
+
+.promo-bar__close {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #ffe4c7;
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  opacity: 0.8;
+}
+
+.promo-bar__close:hover {
+  opacity: 1;
+}
+
+/* Inline promo callout (contact + estimate pages) */
+.promo-callout {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: rgba(249, 115, 22, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.4);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.promo-callout span:first-child {
+  font-size: 1.2rem;
+}
+
 /* ---- Emergency top bar ---- */
 .topbar {
   height: var(--topbar-h);
@@ -2007,6 +2086,15 @@ h3 {
 
   .topbar__hide-mobile {
     display: none;
+  }
+
+  .promo-bar {
+    padding: 8px 38px 8px 12px;
+  }
+
+  .promo-bar__content {
+    font-size: 0.8rem;
+    gap: 6px;
   }
 
   .nav,
