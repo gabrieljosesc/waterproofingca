@@ -17,6 +17,8 @@ export interface ServicePhoto {
 
 export interface ServicePageContent {
   slug: string;
+  /** Page H1. Falls back to the service title from lib/site.ts when unset. */
+  heading?: string;
   metaTitle: string;
   metaDescription: string;
   heroImage: string;
@@ -90,6 +92,7 @@ const photos = {
 export const servicePages: Record<string, ServicePageContent> = {
   "exterior-waterproofing": {
     slug: "exterior-waterproofing",
+    heading: "Exterior Waterproofing Toronto",
     metaTitle: "Exterior Basement Waterproofing — From $275/ft | DryFort Waterproofing",
     metaDescription:
       "Exterior foundation waterproofing across Southern Ontario: excavation to the footing, rubberized membrane, dimple board and new weeping tile. From $275 per linear foot with a transferable 25-year warranty.",

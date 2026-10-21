@@ -86,7 +86,7 @@ export function ServicePageView({ page }: { page: ServicePageContent }) {
             <Link href="/">Home</Link> / <Link href="/services">Services</Link> / {service.title}
           </div>
           <span className="eyebrow">Our Services</span>
-          <h1>{service.title}</h1>
+          <h1>{page.heading ?? service.title}</h1>
           <p>{page.heroLead}</p>
         </div>
       </section>
