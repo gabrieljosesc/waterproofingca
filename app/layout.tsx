@@ -50,9 +50,12 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   // Site ownership tokens for Google Search Console / Bing Webmaster Tools.
-  // Set the env vars in Vercel once the properties are created.
+  // These are not secrets (they're printed in the page <head>); the env var
+  // only exists so a different property can be verified without a code change.
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+    google:
+      process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
+      "sgiRTW7k4I1eH-lMog_JDVBDK378E-waaWuj4_ZLCzg",
     other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
       ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
       : undefined,
