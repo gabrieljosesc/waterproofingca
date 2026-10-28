@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { HalloweenBanner } from "@/components/HalloweenBanner";
 import { GoogleTag } from "@/components/GoogleTag";
+import { DeferredTagLoader } from "@/components/DeferredTagLoader";
 import {
   GoogleTagManagerNoScript,
   GoogleTagManagerScript,
@@ -160,6 +161,7 @@ export default function RootLayout({
         <GoogleTagManagerNoScript />
         <GoogleTagManagerScript />
         <GoogleTag />
+        <DeferredTagLoader />
         <StructuredData />
         <HalloweenBanner />
         <Navbar />

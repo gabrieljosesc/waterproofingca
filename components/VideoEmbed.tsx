@@ -43,7 +43,7 @@ export function VideoEmbed({ src, poster, youtubeId, title }: VideoEmbedProps) {
             type="button"
             className="video-embed__play"
             onClick={() => setPlaying(true)}
-            aria-label={`Play video: ${title}`}
+            aria-label={`Watch the video: ${title}`}
           >
             {poster && (
               <Image
