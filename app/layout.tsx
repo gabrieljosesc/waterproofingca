@@ -36,14 +36,26 @@ export const metadata: Metadata = {
     "commercial waterproofing Ontario",
     "waterproofing cost per linear foot",
   ],
+  // Every page gets a canonical of its own path unless it sets one itself.
+  alternates: { canonical: "./" },
   openGraph: {
     type: "website",
     locale: "en_CA",
     siteName: site.name,
     title: `${site.name} | 24/7 Emergency Basement Waterproofing in Southern Ontario`,
     description: site.description,
+    // Default preview image for links shared on Facebook / WhatsApp / iMessage.
+    images: [{ url: "/og-default.jpg", width: 1200, height: 630, alt: "DryFort Waterproofing — finished exterior waterproofing job" }],
   },
   robots: { index: true, follow: true },
+  // Site ownership tokens for Google Search Console / Bing Webmaster Tools.
+  // Set the env vars in Vercel once the properties are created.
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
+      : undefined,
+  },
 };
 
 /**

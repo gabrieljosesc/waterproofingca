@@ -6,22 +6,33 @@ import { isPromoActive, site } from "@/lib/site";
 
 const DISMISS_KEY = "df-halloween-dismissed";
 
-/** Site-wide seasonal promo bar. Auto-hides after site.promo.endsOn. */
+/**
+ * Site-wide seasonal promo bar.
+ *
+ * Rendered on the server (so it is in the HTML from the first paint and
+ * doesn't push the page down after load — that shift was costing the site
+ * its Core Web Vitals score). The client only ever *hides* it: when the
+ * visitor dismissed it earlier, or when the promo has passed its end date
+ * on the visitor's clock. The pages are static, so after `endsOn` a
+ * redeploy removes it from the HTML entirely.
+ */
 export function HalloweenBanner() {
-  const [hidden, setHidden] = useState(true);
+  const activeAtBuild = isPromoActive();
+  const [hidden, setHidden] = useState(false);
 
-  // Only show after mount: respect the promo end date (per viewer's clock)
-  // and a previous dismissal (per browser).
   useEffect(() => {
-    if (!isPromoActive()) return;
+    if (!isPromoActive()) {
+      setHidden(true);
+      return;
+    }
     try {
-      if (localStorage.getItem(DISMISS_KEY) !== "1") setHidden(false);
+      if (localStorage.getItem(DISMISS_KEY) === "1") setHidden(true);
     } catch {
-      setHidden(false);
+      /* storage unavailable — leave it showing */
     }
   }, []);
 
-  if (hidden) return null;
+  if (!activeAtBuild || hidden) return null;
 
   const dismiss = () => {
     setHidden(true);

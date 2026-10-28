@@ -28,7 +28,16 @@ declare global {
 }
 
 function gtag(...args: unknown[]) {
-  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
+  if (typeof window === "undefined") return;
+  if (typeof window.gtag !== "function") {
+    // gtag.js loads lazily; queue the command exactly the way its own
+    // snippet does so it is processed once the library arrives.
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () {
+      // eslint-disable-next-line prefer-rest-params
+      window.dataLayer!.push(arguments);
+    };
+  }
   window.gtag(...args);
 }
 

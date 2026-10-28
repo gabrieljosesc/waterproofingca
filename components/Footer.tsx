@@ -28,14 +28,14 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="footer__social"
-              aria-label="DryFort Waterproofing on Facebook (opens in a new tab)"
+              aria-label="Follow us on Facebook (opens in a new tab)"
             >
               <FacebookIcon size={20} /> Follow us on Facebook
             </a>
           </div>
 
           <div className="footer__col">
-            <h4>Services</h4>
+            <h3>Services</h3>
             <ul>
               {services.map((s) => (
                 <li key={s.slug}>
@@ -46,7 +46,7 @@ export function Footer() {
           </div>
 
           <div className="footer__col">
-            <h4>Areas We Serve</h4>
+            <h3>Areas We Serve</h3>
             <ul className="footer__col-list--2up">
               {cityPages.map((c) => (
                 <li key={c.slug}>
@@ -57,7 +57,7 @@ export function Footer() {
           </div>
 
           <div className="footer__col">
-            <h4>Company</h4>
+            <h3>Company</h3>
             <ul>
               {navLinks.map((link) => (
                 <li key={link.href}>
@@ -65,7 +65,7 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-            <h4 style={{ marginTop: 28 }}>Get in Touch</h4>
+            <h3 style={{ marginTop: 28 }}>Get in Touch</h3>
             <ul>
               <li>
                 <a href={site.phoneHref}>{site.phone} (24/7)</a>
