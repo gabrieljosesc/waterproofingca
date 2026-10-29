@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { services, site } from "@/lib/site";
+import { cityPages } from "@/lib/cities";
 import type { ServicePageContent } from "@/lib/services/pages";
 import {
   CRACK_REPAIR_VIDEO_ID,
@@ -28,6 +29,8 @@ export function serviceMetadata(page: ServicePageContent): Metadata {
   };
 }
 
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
 export function ServicePageView({ page }: { page: ServicePageContent }) {
   const service = services.find((s) => s.slug === page.slug);
   if (!service) return null;
@@ -42,7 +45,7 @@ export function ServicePageView({ page }: { page: ServicePageContent }) {
     description: page.metaDescription,
     url: `${site.url}/services/${page.slug}`,
     provider: { "@type": "HomeAndConstructionBusiness", name: site.name, url: site.url, telephone: site.phone },
-    areaServed: { "@type": "AdministrativeArea", name: "Southern Ontario" },
+    areaServed: cityPages.map((c) => ({ "@type": "City", name: `${c.name}, Ontario` })),
   };
   const breadcrumbLd = {
     "@context": "https://schema.org",
@@ -253,8 +256,30 @@ export function ServicePageView({ page }: { page: ServicePageContent }) {
         </div>
       </section>
 
+      {/* Service areas — links every service page to every city page */}
+      <section className="section section--tight">
+        <div className="container center">
+          <span className="eyebrow">Where We Work</span>
+          <h2 className="section-title" style={{ textTransform: "none" }}>
+            {capitalize(page.shortName)} across Southern Ontario
+          </h2>
+          <p className="section-lead" style={{ margin: "0 auto" }}>
+            Based in Toronto, with crews dispatching across the GTA, Hamilton and
+            Niagara, Kitchener–Waterloo and London. Pick your city for local
+            conditions, subsidy programs and pricing.
+          </p>
+          <ul className="link-cloud">
+            {cityPages.map((c) => (
+              <li key={c.slug}>
+                <Link href={`/basement-waterproofing-${c.slug}`}>{c.name}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* Other services */}
-      <section className="section">
+      <section className="section section--alt">
         <div className="container">
           <div className="center" style={{ marginBottom: 36 }}>
             <span className="eyebrow">Other Services</span>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import type { CityPage } from "@/lib/cities";
+import { cityPages, type CityPage } from "@/lib/cities";
 import { images, services, site } from "@/lib/site";
 import { CtaBand } from "@/components/CtaBand";
 import { CheckIcon, PhoneIcon } from "@/components/Icons";
@@ -139,14 +139,12 @@ export function CityPageView({ page }: { page: CityPage }) {
               const service = serviceBySlug.get(sl.slug);
               if (!service) return null;
               return (
-                <Link
-                  key={sl.slug}
-                  href={`/services/${sl.slug}`}
-                  className="card"
-                  style={{ display: "block", textDecoration: "none", color: "inherit" }}
-                >
+                <Link key={sl.slug} href={`/services/${sl.slug}`} className="card card--link">
                   <h3 style={{ fontSize: "1.1rem", marginBottom: 8 }}>{service.title}</h3>
                   <p style={{ margin: 0 }}>{sl.line}</p>
+                  <span className="card__link">
+                    {service.title} in {page.name} →
+                  </span>
                 </Link>
               );
             })}
@@ -210,6 +208,26 @@ export function CityPageView({ page }: { page: CityPage }) {
               </details>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Other cities — links every city page to every other city page */}
+      <section className="section section--tight section--alt">
+        <div className="container center">
+          <span className="eyebrow">Also Serving</span>
+          <h2 className="section-title">Basement waterproofing near {page.name}</h2>
+          <p className="section-lead" style={{ margin: "0 auto" }}>
+            The same crews, pricing and 24/7 line cover the rest of Southern Ontario.
+          </p>
+          <ul className="link-cloud">
+            {cityPages
+              .filter((c) => c.slug !== page.slug)
+              .map((c) => (
+                <li key={c.slug}>
+                  <Link href={`/basement-waterproofing-${c.slug}`}>{c.name}</Link>
+                </li>
+              ))}
+          </ul>
         </div>
       </section>
 

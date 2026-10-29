@@ -19,6 +19,8 @@ export interface ServicePageContent {
   slug: string;
   /** Page H1. Falls back to the service title from lib/site.ts when unset. */
   heading?: string;
+  /** Short lowercase name used in running text, e.g. "exterior waterproofing across Southern Ontario". */
+  shortName: string;
   metaTitle: string;
   metaDescription: string;
   heroImage: string;
@@ -93,9 +95,10 @@ export const servicePages: Record<string, ServicePageContent> = {
   "exterior-waterproofing": {
     slug: "exterior-waterproofing",
     heading: "Exterior Waterproofing Toronto",
-    metaTitle: "Exterior Basement Waterproofing — From $275/ft | DryFort Waterproofing",
+    shortName: "exterior waterproofing",
+    metaTitle: "Exterior Waterproofing Toronto — From $275/ft | DryFort",
     metaDescription:
-      "Exterior foundation waterproofing across Southern Ontario: excavation to the footing, rubberized membrane, dimple board and new weeping tile. From $275 per linear foot with a transferable 25-year warranty.",
+      "Exterior foundation waterproofing in Toronto and across Southern Ontario: excavation to the footing, rubberized membrane, dimple board and new weeping tile. From $275 per linear foot with a transferable 25-year warranty.",
     heroImage: photos.membrane.src,
     heroAlt: photos.membrane.alt,
     heroLead:
@@ -161,14 +164,32 @@ export const servicePages: Record<string, ServicePageContent> = {
         q: "Why is exterior more expensive than interior?",
         a: "Excavation. Digging to the footing, handling the soil and restoring the yard is most of the cost. What you get for it is a wall that water never reaches, instead of a system that manages water after it's already through.",
       },
+      {
+        q: "How much does exterior waterproofing cost in Toronto?",
+        a: "From $275 per linear foot with a $4,000 minimum job, and that includes the excavation, membrane, drainage board and new weeping tile — not just the membrane. Depth, access and what's along the wall (decks, AC units, interlock) move the rate, which is why the final number is confirmed at a free on-site visit. For a range before anyone visits, send photos through the instant estimate.",
+      },
+      {
+        q: "Can exterior waterproofing be done in winter?",
+        a: "Often, yes. Frozen ground slows the dig and some restoration — sod in particular — waits for spring, but the waterproofing itself can go ahead through much of the year. If water is coming in now, we don't recommend waiting for warm weather; tell us your situation and we'll give you a realistic schedule.",
+      },
+      {
+        q: "Are foundation cracks repaired as part of the job?",
+        a: "Yes. Once the wall is exposed and cleaned, cracks along the waterproofed run are repaired before the membrane goes on. That's included in the per-foot rate, not an extra.",
+      },
+      {
+        q: "Is financing available?",
+        a: "Yes — ask about monthly payment plans when you get your quote, or see the pricing page. A written, itemized quote comes first either way, so you know the total before deciding how to pay.",
+      },
     ],
   },
 
   "interior-waterproofing": {
     slug: "interior-waterproofing",
-    metaTitle: "Interior Basement Waterproofing — From $120/ft | DryFort Waterproofing",
+    heading: "Interior Waterproofing Toronto",
+    shortName: "interior waterproofing",
+    metaTitle: "Interior Waterproofing Toronto — From $120/ft | DryFort",
     metaDescription:
-      "Interior basement waterproofing in Southern Ontario: internal weeping tile at the footing, dimpled drainage membrane and sump integration — no excavation. From $120 per linear foot.",
+      "Interior basement waterproofing in Toronto and Southern Ontario: internal weeping tile at the footing, dimpled drainage membrane and sump integration — no excavation. From $120 per linear foot.",
     heroImage: photos.interiorMembrane.src,
     heroAlt: photos.interiorMembrane.alt,
     heroLead:
@@ -219,14 +240,32 @@ export const servicePages: Record<string, ServicePageContent> = {
         q: "How disruptive is it?",
         a: "Far less than excavation. The work is inside, along one or more walls, and there's no digging in the yard. Finished walls along the affected run are opened and the floor strip is re-poured; we keep dust and debris contained.",
       },
+      {
+        q: "How much does interior waterproofing cost in Toronto?",
+        a: "$120 per linear foot with a $2,800 minimum job. That covers the floor cut, interior weeping tile, drainage membrane and re-pouring the floor. The sump pump and battery backup are quoted as separate line items so you can see exactly what each part costs.",
+      },
+      {
+        q: "Can I finish the basement afterwards?",
+        a: "Yes. The floor is re-poured flush and the membrane sits behind the finished wall, so drywall, framing and flooring go in over it as normal. Tell us if you're planning to finish — we'll leave the strip ready for it.",
+      },
+      {
+        q: "Does the Toronto subsidy cover interior waterproofing?",
+        a: "Not the drainage membrane itself, but the sump pump and battery backup that go with it can qualify. Toronto's Basement Flooding Protection Subsidy Program reimburses 80% of the cost up to $2,250 for a sump pump and $300 for a battery backup. Other cities have their own programs; we'll tell you what applies to your address.",
+      },
+      {
+        q: "How long does an interior job take?",
+        a: "Most single-wall jobs take a few working days from cutting the floor to the re-poured strip, plus curing time before anything goes on top of it. Longer runs or a new sump pit add time. The schedule is in your written quote.",
+      },
     ],
   },
 
   "emergency-flood-response": {
     slug: "emergency-flood-response",
-    metaTitle: "24/7 Emergency Basement Flood Response | DryFort Waterproofing",
+    heading: "Emergency Flood Response Toronto",
+    shortName: "24/7 emergency flood response",
+    metaTitle: "24/7 Emergency Basement Flood Response Toronto | DryFort",
     metaDescription:
-      "Basement flooding right now? DryFort answers 24/7 across Southern Ontario — a real person picks up, a crew is dispatched, water is extracted and the entry point found. Call (647) 370-3280.",
+      "Basement flooding right now? DryFort answers 24/7 in Toronto and across Southern Ontario — a real person picks up, a crew is dispatched, water is extracted and the entry point found. Call (647) 370-3280.",
     heroImage: photos.flooded.src,
     heroAlt: photos.flooded.alt,
     heroLead:
@@ -276,14 +315,32 @@ export const servicePages: Record<string, ServicePageContent> = {
         q: "Do you really work nights, weekends and holidays?",
         a: "Yes. The emergency line is answered 24/7, 365 days a year, and crews dispatch around the clock across Southern Ontario.",
       },
+      {
+        q: "Which areas does the emergency line cover?",
+        a: "Toronto and the GTA, Mississauga, Hamilton, Burlington, Oakville, St. Catharines and Niagara, Kitchener–Waterloo, Guelph, Brantford, London and the communities around them. If you're not sure you're in range, call anyway — we'll tell you straight away.",
+      },
+      {
+        q: "Will my insurance cover a flooded basement?",
+        a: "It depends on your policy. Sewer backup and overland water are usually separate add-ons, so check whether you have them. What we can do is document the cause: you get a written assessment of where the water came from and an itemized quote for the repair, which is what insurers ask for.",
+      },
+      {
+        q: "Water is coming up through the floor drain — is that something you fix?",
+        a: "Yes. Water from the floor drain during a storm is municipal sewer backup, and the fix is a backwater valve on your sanitary line. We install them, and in Toronto the City reimburses 80% of the cost up to $1,600 per valve. See our drainage systems page for how it works.",
+      },
+      {
+        q: "What if I'm not sure it's an emergency?",
+        a: "Call. Describe what you're seeing and the dispatcher will tell you whether a crew needs to come tonight or whether it can safely wait for a scheduled visit. There's no charge for the call and no pressure either way.",
+      },
     ],
   },
 
   "sump-pump-installation": {
     slug: "sump-pump-installation",
-    metaTitle: "Sump Pump Installation, Replacement & Battery Backup | DryFort Waterproofing",
+    heading: "Sump Pump Installation Toronto",
+    shortName: "sump pump installation",
+    metaTitle: "Sump Pump Installation Toronto — Battery Backup | DryFort",
     metaDescription:
-      "Sump pump installation and replacement across Southern Ontario — new pits, primary pumps, battery backups and discharge lines, with help claiming municipal subsidies.",
+      "Sump pump installation and replacement in Toronto and across Southern Ontario — new pits, primary pumps, battery backups and discharge lines, with help claiming municipal subsidies.",
     heroImage: images.pumpGravel,
     heroAlt: "Water pump and discharge pipe on gravel",
     heroLead:
@@ -329,14 +386,32 @@ export const servicePages: Record<string, ServicePageContent> = {
         q: "Can I get a subsidy for this?",
         a: "Many Southern Ontario municipalities run basement flooding protection programs that cover sump pumps, backwater valves and related work. Toronto's covers up to $6,650 across eligible items; others vary. We'll tell you what applies to your address and give you the paperwork.",
       },
+      {
+        q: "How much does a sump pump installation cost in Toronto?",
+        a: "It's quoted as its own line item, because the price depends on whether you need a new pit cut into the slab or just a pump in an existing one, how far the discharge has to run, and whether you add a battery backup. In Toronto, the City reimburses 80% of the cost up to $2,250 for the pump and $300 for the backup, which covers a large share of a typical install.",
+      },
+      {
+        q: "Where does the discharge water go?",
+        a: "Outside, to a point where it drains away from your foundation — not onto a neighbour's property or a sidewalk where it will ice up. Connecting a sump to the sanitary sewer isn't permitted in most municipalities, and it's one of the things we correct when we find it.",
+      },
+      {
+        q: "Can you service or replace my existing pump?",
+        a: "Yes. If the pit is sound we clean and inspect it, replace the pump and check valve, and test the system under load. If the pit is undersized or the discharge is wrong, we'll say so and quote the fix separately.",
+      },
+      {
+        q: "How do I know if my sump pump is working?",
+        a: "Pour a bucket of water into the pit: the float should rise, the pump should kick on and the water should clear in seconds. If it doesn't run, runs without clearing the pit, or you've never heard it run even during heavy rain, have it checked before the next storm.",
+      },
     ],
   },
 
   "foundation-crack-repair": {
     slug: "foundation-crack-repair",
-    metaTitle: "Foundation Crack Repair — Injection & Interior Repair | DryFort Waterproofing",
+    heading: "Foundation Crack Repair Toronto",
+    shortName: "foundation crack repair",
+    metaTitle: "Foundation Crack Repair Toronto — Lifetime Warranty | DryFort",
     metaDescription:
-      "Leaking foundation crack? DryFort repairs poured-concrete and block foundation cracks across Southern Ontario — polyurethane/epoxy injection or interior chisel-out repair with crystalline waterproofing. Lifetime warranty on injections.",
+      "Leaking foundation crack? DryFort repairs poured-concrete and block foundation cracks in Toronto and across Southern Ontario — polyurethane/epoxy injection or interior chisel-out repair with crystalline waterproofing. Lifetime warranty on injections.",
     heroImage: images.crackWall,
     heroAlt: "Vertical crack running through a concrete foundation wall",
     heroLead:
@@ -374,14 +449,32 @@ export const servicePages: Record<string, ServicePageContent> = {
         q: "What's the warranty?",
         a: "Crack injections carry a lifetime warranty against leaking through the repaired crack. Other repair methods are warrantied as stated in your written quote.",
       },
+      {
+        q: "How much does foundation crack repair cost in Toronto?",
+        a: "Cracks are quoted per project after we've seen them, because the length, width and whether it's actively leaking all matter. Because there's no excavation, it's one of the least expensive repairs we do. Send a few photos through the instant estimate and you'll get a range before anyone visits.",
+      },
+      {
+        q: "Can't I just patch it with hydraulic cement?",
+        a: "A surface patch usually holds until the next freeze-thaw cycle, then the crack moves and the patch lets go. A lasting repair has to fill the crack through the full thickness of the wall (injection) or be rebuilt into sound concrete (chisel-out). That's the difference between a cosmetic fix and a permanent one.",
+      },
+      {
+        q: "Will the crack come back?",
+        a: "Not through a properly injected crack — the material fills it end to end and stays flexible, which is why injections carry a lifetime warranty. Concrete can develop new cracks elsewhere as the house moves, but the repaired one is closed for good.",
+      },
+      {
+        q: "Do you repair cracks in block foundations?",
+        a: "Yes. Concrete block has hollow cores, so injection doesn't work the same way as in a poured wall; block cracks are repaired and sealed from the exterior side instead. We'll tell you which approach applies when we see the wall.",
+      },
     ],
   },
 
   "drainage-systems": {
     slug: "drainage-systems",
-    metaTitle: "Weeping Tile Replacement, Window Well & Drainage Systems | DryFort Waterproofing",
+    heading: "Weeping Tile & Drainage Toronto",
+    shortName: "weeping tile and drainage work",
+    metaTitle: "Weeping Tile & Drainage Systems Toronto | DryFort",
     metaDescription:
-      "Weeping tile replacement, window well drains, backwater valves, grading and downspout management across Southern Ontario — the drainage that keeps water away from your foundation.",
+      "Weeping tile replacement, window well drains, backwater valves, grading and downspout management in Toronto and across Southern Ontario — the drainage that keeps water away from your foundation.",
     heroImage: photos.weepingTile.src,
     heroAlt: photos.weepingTile.alt,
     heroLead:
@@ -426,6 +519,22 @@ export const servicePages: Record<string, ServicePageContent> = {
       {
         q: "Are these subsidized?",
         a: "Often. Backwater valves, sump pumps and downspout disconnection are the items most municipalities subsidize; Toronto's program covers up to $6,650 across eligible items. We'll confirm what your city offers and give you the documentation.",
+      },
+      {
+        q: "How much does weeping tile replacement cost in Toronto?",
+        a: "When it's done as part of exterior waterproofing, new weeping tile is included in the $275 per linear foot rate — the trench is already open. Standalone replacement, window well drains and backwater valves are quoted per job after a site visit, and the instant estimate can give you a range from photos first.",
+      },
+      {
+        q: "Do I need a permit for a backwater valve in Toronto?",
+        a: "Yes. Toronto requires a building permit for backwater valve installation, and the subsidy program requires the permit and inspection to pay out. We handle the permit as part of the job; the City then reimburses 80% of the cost up to $1,600 per valve.",
+      },
+      {
+        q: "My window well fills with water every storm — can you fix that?",
+        a: "Yes. A well that fills up has no working drain, so water rises until it spills over the sill. We install a drain at the bottom of the well tied into the weeping tile and fit a cover to keep leaves out, so it can't fill in the first place.",
+      },
+      {
+        q: "Will regrading and extending downspouts really make a difference?",
+        a: "For a lot of houses, yes — a downspout dumping at the wall puts the whole roof's runoff against one spot of foundation. Regrading and moving discharge well away from the house is the cheapest fix we do, and it's the first thing to check before spending on anything else.",
       },
     ],
   },

@@ -1881,6 +1881,37 @@ h3 {
   margin-top: 14px;
 }
 
+/* ---- City / service link cloud (interlinking sections) ---- */
+.link-cloud {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: 840px;
+  margin: 26px auto 0;
+  padding: 0;
+}
+
+.link-cloud a {
+  display: inline-block;
+  padding: 10px 18px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.link-cloud a:hover,
+.link-cloud a:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 @media (max-width: 1000px) {
   .photo-grid {
     grid-template-columns: repeat(2, 1fr);
